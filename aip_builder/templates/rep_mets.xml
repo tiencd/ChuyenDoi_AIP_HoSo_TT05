@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:mets="http://www.loc.gov/METS/" 
+           xmlns:xlink="http://www.w3.org/1999/xlink"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:csip="https://DILCIS.eu/XML/METS/CSIPExtensionMETS"
+           xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/mets.xsd"
+           OBJID="{{ hoso.objid }}"
+           TYPE="Representation"
+           PROFILE="https://eark-project.com/E-ARK-CSIP-1.2">
+           
+    <!-- CSIP OAIS Package Type -->
+    <csip:OAISPACKAGETYPE>AIP</csip:OAISPACKAGETYPE>
+           
+    <mets:metsHdr CREATEDATE="{{ created_time | format_date('%Y-%m-%dT%H:%M:%S+07:00') }}">
+        <mets:agent ROLE="CREATOR" TYPE="ORGANIZATION">
+            <mets:name>{{ config.organization_name | escape_xml }}</mets:name>
+            <mets:note>AIP Builder System - Representation Level METS</mets:note>
+        </mets:agent>
+    </mets:metsHdr>
+    
+    <!-- Descriptive Metadata Section -->
+    <mets:dmdSec ID="dmd-rep-{{ hoso.file_id }}">
+        <mets:mdRef ID="mdref-rep-ead-{{ hoso.file_id }}"
+                    LOCTYPE="URL" 
+                    MDTYPE="EAD" 
+                    MIMETYPE="text/xml"
+                    CHECKSUMTYPE="SHA-256"
+                    CREATED="{{ created_time | format_date('%Y-%m-%dT%H:%M:%S+07:00') }}"
+                    xlink:type="simple"
+                    xlink:href="../metadata/descriptive/ead.xml"/>
+    </mets:dmdSec>
+    
+    {% for tai_lieu in hoso.tai_lieu %}
+    <!-- Document specific metadata -->
+    <mets:dmdSec ID="dmd-doc-{{ tai_lieu.file_id }}" CREATED="{{ created_time | format_date('%Y-%m-%dT%H:%M:%S+07:00') }}">
+        <mets:mdRef ID="mdref-doc-{{ tai_lieu.file_id }}"
+                    LOCTYPE="URL" 
+                    MDTYPE="EAD" 
+                    MIMETYPE="text/xml"
+                    {% if tai_lieu.kich_thuoc_file %}SIZE="{{ tai_lieu.kich_thuoc_file }}"{% endif %}
+                    {% if tai_lieu.checksum %}CHECKSUM="{{ tai_lieu.checksum }}" CHECKSUMTYPE="SHA-256"{% endif %}
+                    CREATED="{{ created_time | format_date('%Y-%m-%dT%H:%M:%S+07:00') }}"
+                    xlink:type="simple"
+                    xlink:href="metadata/descriptive/EAD_doc_{{ tai_lieu.file_id }}.xml"/>
+    </mets:dmdSec>
+    {% endfor %}
+    
+    <!-- Administrative Metadata -->
+    <mets:amdSec ID="amd-rep-{{ hoso.file_id }}">
+        <mets:techMD ID="tech-rep-{{ hoso.file_id }}">
+            <mets:mdRef LOCTYPE="URL" MDTYPE="PREMIS" 
+                        HREF="../metadata/preservation/premis.xml"
+                        xlink:type="simple"/>
+        </mets:techMD>
+    </mets:amdSec>
+    
+    <!-- File Section -->
+    <mets:fileSec ID="fs-{{ hoso.file_id }}">
+        <mets:fileGrp ID="fg-data-{{ hoso.file_id }}" USE="Data">
+            {% for tai_lieu in hoso.tai_lieu %}
+            <mets:file ID="{{ tai_lieu.file_id }}" MIMETYPE="application/pdf" 
+                       {% if tai_lieu.kich_thuoc_file %}SIZE="{{ tai_lieu.kich_thuoc_file }}"{% endif %}
+                       {% if tai_lieu.checksum %}CHECKSUM="{{ tai_lieu.checksum }}" CHECKSUMTYPE="SHA-256"{% endif %}
+                       CREATED="{{ created_time | format_date('%Y-%m-%dT%H:%M:%S+07:00') }}">
+                <mets:FLocat LOCTYPE="URL" xlink:href="data/{{ tai_lieu.ten_file_goc | safe_filename if tai_lieu.ten_file_goc else tai_lieu.duong_dan_file | safe_filename }}" xlink:type="simple"/>
+            </mets:file>
+            {% endfor %}
+        </mets:fileGrp>
+    </mets:fileSec>
+    
+    <!-- Structure Map -->
+    <mets:structMap ID="sm-{{ hoso.file_id }}" LABEL="CSIP" TYPE="logical">
+        
+        <!-- Data Division -->
+        <mets:div ID="div-data-{{ hoso.file_id }}" LABEL="Data">
+            {% for tai_lieu in hoso.tai_lieu %}
+            <mets:div ID="div-doc-{{ tai_lieu.file_id }}" LABEL="{{ tai_lieu.effective_title | escape_xml }}">
+                <mets:fptr FILEID="{{ tai_lieu.file_id }}"/>
+            </mets:div>
+            {% endfor %}
+        </mets:div>
+        
+        <!-- MetadataLink Division -->
+        <mets:div ID="div-metalink-{{ hoso.file_id }}" LABEL="MetadataLink">
+            {% for tai_lieu in hoso.tai_lieu %}
+            <mets:div ID="uuid-{{ tai_lieu.file_id | upper }}" LABEL="MetadataLink/File" 
+                      DMDID="dmd-doc-{{ tai_lieu.file_id }}" ADMID="amd-rep-{{ hoso.file_id }}">
+                <mets:fptr FILEID="{{ tai_lieu.file_id }}"/>
+            </mets:div>
+            {% endfor %}
+        </mets:div>
+        
+    </mets:structMap>
+    
+</mets:mets>

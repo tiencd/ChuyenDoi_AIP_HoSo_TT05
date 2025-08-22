@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<premis:premis xmlns:premis="http://www.loc.gov/premis/v3"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.loc.gov/premis/v3 http://www.loc.gov/standards/premis/premis.xsd"
+               version="3.0">
+  
+  <!-- Intellectual Entity Object -->
+  <premis:object xsi:type="premis:intellectualEntity">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:objectCharacteristicsExtension>
+        <title>Tập lưu văn bản đi của Chi cục An toàn Vệ sinh Thực phẩm tháng 01 đến tháng 6 năm 2010. Từ số: 01 - 35. Khuyết số: 03 -11, 13 - 22, 24 - 27, 32, 34, 36, 38, 39, 41, 42, 44, 45, 47, 50, 54 - 58, 61 - 65, 74, 79, 81, 83, 84, 87, 91, 96, 97, 99 - 102, 104 - 108, 113, 117, 121 - 123, 126, 127, 134, 135</title>
+        <type>AIP - Archival Information Package</type>
+        <identifier>T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th_</identifier>
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:significantProperties>
+      <premis:significantPropertiesType>Archival Record</premis:significantPropertiesType>
+      <premis:significantPropertiesValue>Tập lưu văn bản đi của Chi cục An toàn Vệ sinh Thực phẩm tháng 01 đến tháng 6 năm 2010. Từ số: 01 - 35. Khuyết số: 03 -11, 13 - 22, 24 - 27, 32, 34, 36, 38, 39, 41, 42, 44, 45, 47, 50, 54 - 58, 61 - 65, 74, 79, 81, 83, 84, 87, 91, 96, 97, 99 - 102, 104 - 108, 113, 117, 121 - 123, 126, 127, 134, 135</premis:significantPropertiesValue>
+    </premis:significantProperties>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>is part of</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>FONDS</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>Chi cục An toàn vệ sinh thực phẩm</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+  </premis:object>
+
+  <!-- Representation Object -->
+  <premis:object xsi:type="premis:representation">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_rep1</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:objectCharacteristicsExtension>
+        <representationType>Original</representationType>
+        <digitalFormatName>PDF</digitalFormatName>
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>represents</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+  </premis:object>
+
+  <!-- File Objects -->
+  <premis:object xsi:type="premis:file">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_file_1</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:compositionLevel>0</premis:compositionLevel>
+      
+      <premis:fixity>
+        <premis:messageDigestAlgorithm>SHA-256</premis:messageDigestAlgorithm>
+        <premis:messageDigest>[TO_BE_CALCULATED]</premis:messageDigest>
+        <premis:messageDigestOriginator></premis:messageDigestOriginator>
+      </premis:fixity>
+      
+      
+      <premis:format>
+        <premis:formatDesignation>
+          <premis:formatName>PDF</premis:formatName>
+          <premis:formatVersion>1.4 or later</premis:formatVersion>
+        </premis:formatDesignation>
+        <premis:formatNote>Portable Document Format</premis:formatNote>
+      </premis:format>
+      
+      <premis:objectCharacteristicsExtension>
+        <originalFileName>001.03.08.H30.81.2024.K4.01.01.001.pdf</originalFileName>
+        <documentTitle>Quyết định Về việc ban hành Quy chế chi tiêu nội bộ của Chi cục An toàn vệ sinh thực phẩm</documentTitle>
+        <creator>Sở y tế Hậu Giang chi cục an toàn vệ sinh thực phẩm</creator>
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:storage>
+      <premis:contentLocation>
+        <premis:contentLocationType>URI</premis:contentLocationType>
+        <premis:contentLocationValue>representations/rep1/data/001.03.08.H30.81.2024.K4.01.01.001.pdf</premis:contentLocationValue>
+      </premis:contentLocation>
+    </premis:storage>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>is part of</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_rep1</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+    
+  </premis:object>
+  <premis:object xsi:type="premis:file">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_file_2</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:compositionLevel>0</premis:compositionLevel>
+      
+      <premis:fixity>
+        <premis:messageDigestAlgorithm>SHA-256</premis:messageDigestAlgorithm>
+        <premis:messageDigest>[TO_BE_CALCULATED]</premis:messageDigest>
+        <premis:messageDigestOriginator></premis:messageDigestOriginator>
+      </premis:fixity>
+      
+      
+      <premis:format>
+        <premis:formatDesignation>
+          <premis:formatName>PDF</premis:formatName>
+          <premis:formatVersion>1.4 or later</premis:formatVersion>
+        </premis:formatDesignation>
+        <premis:formatNote>Portable Document Format</premis:formatNote>
+      </premis:format>
+      
+      <premis:objectCharacteristicsExtension>
+        <originalFileName>001.03.08.H30.81.2024.K4.01.01.002.pdf</originalFileName>
+        <documentTitle>Bảng mô tả công việc cá nhân - phòng thông tin truyền thông và quản lý nghiệp vụ điều kiện thực phẩm</documentTitle>
+        <creator>Chị cục an toàn vệ sinh thực phẩm - phồng thông tin truyền thông và quản lý nghiệp vụ điều kiện thực phẩm</creator>
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:storage>
+      <premis:contentLocation>
+        <premis:contentLocationType>URI</premis:contentLocationType>
+        <premis:contentLocationValue>representations/rep1/data/001.03.08.H30.81.2024.K4.01.01.002.pdf</premis:contentLocationValue>
+      </premis:contentLocation>
+    </premis:storage>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>is part of</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_rep1</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+    
+  </premis:object>
+  <premis:object xsi:type="premis:file">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_file_3</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:compositionLevel>0</premis:compositionLevel>
+      
+      <premis:fixity>
+        <premis:messageDigestAlgorithm>SHA-256</premis:messageDigestAlgorithm>
+        <premis:messageDigest>[TO_BE_CALCULATED]</premis:messageDigest>
+        <premis:messageDigestOriginator></premis:messageDigestOriginator>
+      </premis:fixity>
+      
+      
+      <premis:format>
+        <premis:formatDesignation>
+          <premis:formatName>PDF</premis:formatName>
+          <premis:formatVersion>1.4 or later</premis:formatVersion>
+        </premis:formatDesignation>
+        <premis:formatNote>Portable Document Format</premis:formatNote>
+      </premis:format>
+      
+      <premis:objectCharacteristicsExtension>
+        <originalFileName>001.03.08.H30.81.2024.K4.01.01.003.pdf</originalFileName>
+        <documentTitle>BÁO CÁO KẾT QUẢ VỆ SINH AN TOÀN THỰC PHẨM CÁC CƠ SỞ KINH DOANH RƯỢU NĂM 2010</documentTitle>
+        <creator>SỞ Y TẾ HẬU GIANG CHI CỤC AN TOÀN VỆ SINH THỰC PHẨM</creator>
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:storage>
+      <premis:contentLocation>
+        <premis:contentLocationType>URI</premis:contentLocationType>
+        <premis:contentLocationValue>representations/rep1/data/001.03.08.H30.81.2024.K4.01.01.003.pdf</premis:contentLocationValue>
+      </premis:contentLocation>
+    </premis:storage>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>is part of</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_rep1</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+    
+  </premis:object>
+  <premis:object xsi:type="premis:file">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_file_4</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:compositionLevel>0</premis:compositionLevel>
+      
+      <premis:fixity>
+        <premis:messageDigestAlgorithm>SHA-256</premis:messageDigestAlgorithm>
+        <premis:messageDigest>[TO_BE_CALCULATED]</premis:messageDigest>
+        <premis:messageDigestOriginator></premis:messageDigestOriginator>
+      </premis:fixity>
+      
+      
+      <premis:format>
+        <premis:formatDesignation>
+          <premis:formatName>PDF</premis:formatName>
+          <premis:formatVersion>1.4 or later</premis:formatVersion>
+        </premis:formatDesignation>
+        <premis:formatNote>Portable Document Format</premis:formatNote>
+      </premis:format>
+      
+      <premis:objectCharacteristicsExtension>
+        <originalFileName>001.03.08.H30.81.2024.K4.01.01.004.pdf</originalFileName>
+        <documentTitle>Quyết định Về việc Ban hành quy chế làm việc của Chi cục An toàn vệ sinh thực phẩm</documentTitle>
+        <creator>Sở y tế Hậu Giang chi cục an toàn vệ sinh thực phẩm</creator>
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:storage>
+      <premis:contentLocation>
+        <premis:contentLocationType>URI</premis:contentLocationType>
+        <premis:contentLocationValue>representations/rep1/data/001.03.08.H30.81.2024.K4.01.01.004.pdf</premis:contentLocationValue>
+      </premis:contentLocation>
+    </premis:storage>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>is part of</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_rep1</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+    
+  </premis:object>
+  <premis:object xsi:type="premis:file">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_file_5</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:compositionLevel>0</premis:compositionLevel>
+      
+      <premis:fixity>
+        <premis:messageDigestAlgorithm>SHA-256</premis:messageDigestAlgorithm>
+        <premis:messageDigest>[TO_BE_CALCULATED]</premis:messageDigest>
+        <premis:messageDigestOriginator></premis:messageDigestOriginator>
+      </premis:fixity>
+      
+      
+      <premis:format>
+        <premis:formatDesignation>
+          <premis:formatName>PDF</premis:formatName>
+          <premis:formatVersion>1.4 or later</premis:formatVersion>
+        </premis:formatDesignation>
+        <premis:formatNote>Portable Document Format</premis:formatNote>
+      </premis:format>
+      
+      <premis:objectCharacteristicsExtension>
+        <originalFileName>001.03.08.H30.81.2024.K4.01.01.005.pdf</originalFileName>
+        <documentTitle>Hợp đồng trách nhiệm Về việc xét nghiệm mẫu thực phẩm năm 2010</documentTitle>
+        <creator>Sở y tế Hậu Giang chi cục an toàn vệ sinh thực phẩm</creator>
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:storage>
+      <premis:contentLocation>
+        <premis:contentLocationType>URI</premis:contentLocationType>
+        <premis:contentLocationValue>representations/rep1/data/001.03.08.H30.81.2024.K4.01.01.005.pdf</premis:contentLocationValue>
+      </premis:contentLocation>
+    </premis:storage>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>is part of</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_rep1</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+    
+  </premis:object>
+  <premis:object xsi:type="premis:file">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_file_6</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:compositionLevel>0</premis:compositionLevel>
+      
+      <premis:fixity>
+        <premis:messageDigestAlgorithm>SHA-256</premis:messageDigestAlgorithm>
+        <premis:messageDigest>[TO_BE_CALCULATED]</premis:messageDigest>
+        <premis:messageDigestOriginator></premis:messageDigestOriginator>
+      </premis:fixity>
+      
+      
+      <premis:format>
+        <premis:formatDesignation>
+          <premis:formatName>PDF</premis:formatName>
+          <premis:formatVersion>1.4 or later</premis:formatVersion>
+        </premis:formatDesignation>
+        <premis:formatNote>Portable Document Format</premis:formatNote>
+      </premis:format>
+      
+      <premis:objectCharacteristicsExtension>
+        <originalFileName>001.03.08.H30.81.2024.K4.01.02.001.pdf</originalFileName>
+        <documentTitle>Giấy thôi trả lương (Ông Trần Văn Nhâm)</documentTitle>
+        <creator>Chi cục Vệ sinh an toàn thực phẩm sở y tế tỉnh Hậu Giang</creator>
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:storage>
+      <premis:contentLocation>
+        <premis:contentLocationType>URI</premis:contentLocationType>
+        <premis:contentLocationValue>representations/rep1/data/001.03.08.H30.81.2024.K4.01.02.001.pdf</premis:contentLocationValue>
+      </premis:contentLocation>
+    </premis:storage>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>is part of</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_rep1</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+    
+  </premis:object>
+  <premis:object xsi:type="premis:file">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_file_7</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:compositionLevel>0</premis:compositionLevel>
+      
+      <premis:fixity>
+        <premis:messageDigestAlgorithm>SHA-256</premis:messageDigestAlgorithm>
+        <premis:messageDigest>[TO_BE_CALCULATED]</premis:messageDigest>
+        <premis:messageDigestOriginator></premis:messageDigestOriginator>
+      </premis:fixity>
+      
+      
+      <premis:format>
+        <premis:formatDesignation>
+          <premis:formatName>PDF</premis:formatName>
+          <premis:formatVersion>1.4 or later</premis:formatVersion>
+        </premis:formatDesignation>
+        <premis:formatNote>Portable Document Format</premis:formatNote>
+      </premis:format>
+      
+      <premis:objectCharacteristicsExtension>
+        <originalFileName>001.03.08.H30.81.2024.K4.01.02.002.pdf</originalFileName>
+        <documentTitle>Công văn Về việc xin bổ sung kinh phí năm 2010.</documentTitle>
+        <creator>Chi cục Vệ sinh an toàn thực phẩm sở y tế tỉnh Hậu Giang</creator>
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:storage>
+      <premis:contentLocation>
+        <premis:contentLocationType>URI</premis:contentLocationType>
+        <premis:contentLocationValue>representations/rep1/data/001.03.08.H30.81.2024.K4.01.02.002.pdf</premis:contentLocationValue>
+      </premis:contentLocation>
+    </premis:storage>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>is part of</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_rep1</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+    
+  </premis:object>
+  <premis:object xsi:type="premis:file">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_file_8</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:compositionLevel>0</premis:compositionLevel>
+      
+      <premis:fixity>
+        <premis:messageDigestAlgorithm>SHA-256</premis:messageDigestAlgorithm>
+        <premis:messageDigest>[TO_BE_CALCULATED]</premis:messageDigest>
+        <premis:messageDigestOriginator></premis:messageDigestOriginator>
+      </premis:fixity>
+      
+      
+      <premis:format>
+        <premis:formatDesignation>
+          <premis:formatName>PDF</premis:formatName>
+          <premis:formatVersion>1.4 or later</premis:formatVersion>
+        </premis:formatDesignation>
+        <premis:formatNote>Portable Document Format</premis:formatNote>
+      </premis:format>
+      
+      <premis:objectCharacteristicsExtension>
+        <originalFileName>001.03.08.H30.81.2024.K4.01.02.003.pdf</originalFileName>
+        <documentTitle>Tờ trình Về việc xin cấp bổ sung dự toán điều động nhà trọ</documentTitle>
+        <creator>Chi cục Vệ sinh an toàn thực phẩm sở y tế tỉnh Hậu Giang</creator>
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:storage>
+      <premis:contentLocation>
+        <premis:contentLocationType>URI</premis:contentLocationType>
+        <premis:contentLocationValue>representations/rep1/data/001.03.08.H30.81.2024.K4.01.02.003.pdf</premis:contentLocationValue>
+      </premis:contentLocation>
+    </premis:storage>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>is part of</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_rep1</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+    
+  </premis:object>
+  <premis:object xsi:type="premis:file">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_file_9</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:compositionLevel>0</premis:compositionLevel>
+      
+      <premis:fixity>
+        <premis:messageDigestAlgorithm>SHA-256</premis:messageDigestAlgorithm>
+        <premis:messageDigest>[TO_BE_CALCULATED]</premis:messageDigest>
+        <premis:messageDigestOriginator></premis:messageDigestOriginator>
+      </premis:fixity>
+      
+      
+      <premis:format>
+        <premis:formatDesignation>
+          <premis:formatName>PDF</premis:formatName>
+          <premis:formatVersion>1.4 or later</premis:formatVersion>
+        </premis:formatDesignation>
+        <premis:formatNote>Portable Document Format</premis:formatNote>
+      </premis:format>
+      
+      <premis:objectCharacteristicsExtension>
+        <originalFileName>001.03.08.H30.81.2024.K4.01.02.004.pdf</originalFileName>
+        <documentTitle>Công văn Về việc Quyết toán kinh phí Chương trình mục tiêu VSATTP năm 2010.</documentTitle>
+        <creator>Chi cục Vệ sinh an toàn thực phẩm sở y tế tỉnh Hậu Giang</creator>
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:storage>
+      <premis:contentLocation>
+        <premis:contentLocationType>URI</premis:contentLocationType>
+        <premis:contentLocationValue>representations/rep1/data/001.03.08.H30.81.2024.K4.01.02.004.pdf</premis:contentLocationValue>
+      </premis:contentLocation>
+    </premis:storage>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>is part of</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_rep1</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+    
+  </premis:object>
+  <premis:object xsi:type="premis:file">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_file_10</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:compositionLevel>0</premis:compositionLevel>
+      
+      <premis:fixity>
+        <premis:messageDigestAlgorithm>SHA-256</premis:messageDigestAlgorithm>
+        <premis:messageDigest>[TO_BE_CALCULATED]</premis:messageDigest>
+        <premis:messageDigestOriginator></premis:messageDigestOriginator>
+      </premis:fixity>
+      
+      
+      <premis:format>
+        <premis:formatDesignation>
+          <premis:formatName>PDF</premis:formatName>
+          <premis:formatVersion>1.4 or later</premis:formatVersion>
+        </premis:formatDesignation>
+        <premis:formatNote>Portable Document Format</premis:formatNote>
+      </premis:format>
+      
+      <premis:objectCharacteristicsExtension>
+        <originalFileName>001.03.08.H30.81.2024.K4.01.02.005.pdf</originalFileName>
+        <documentTitle>Tờ trình Về việc xin mua xe mô tô</documentTitle>
+        <creator>SỞ Y TẾ HẬU GIANG CHI CỤC AN TOÀN VỆ SINH THỰC PHẨM</creator>
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:storage>
+      <premis:contentLocation>
+        <premis:contentLocationType>URI</premis:contentLocationType>
+        <premis:contentLocationValue>representations/rep1/data/001.03.08.H30.81.2024.K4.01.02.005.pdf</premis:contentLocationValue>
+      </premis:contentLocation>
+    </premis:storage>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>is part of</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_rep1</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+    
+  </premis:object>
+  <premis:object xsi:type="premis:file">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_file_11</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:compositionLevel>0</premis:compositionLevel>
+      
+      <premis:fixity>
+        <premis:messageDigestAlgorithm>SHA-256</premis:messageDigestAlgorithm>
+        <premis:messageDigest>[TO_BE_CALCULATED]</premis:messageDigest>
+        <premis:messageDigestOriginator></premis:messageDigestOriginator>
+      </premis:fixity>
+      
+      
+      <premis:format>
+        <premis:formatDesignation>
+          <premis:formatName>PDF</premis:formatName>
+          <premis:formatVersion>1.4 or later</premis:formatVersion>
+        </premis:formatDesignation>
+        <premis:formatNote>Portable Document Format</premis:formatNote>
+      </premis:format>
+      
+      <premis:objectCharacteristicsExtension>
+        <originalFileName>001.03.08.H30.81.2024.K4.01.02.006.pdf</originalFileName>
+        <documentTitle>Hợp đồng Về việc xét nghiệm mẫu thực phẩm Quí I và Quí II năm 2010</documentTitle>
+        <creator>Chi cục Vệ sinh an toàn thực phẩm sở y tế tỉnh Hậu Giang</creator>
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:storage>
+      <premis:contentLocation>
+        <premis:contentLocationType>URI</premis:contentLocationType>
+        <premis:contentLocationValue>representations/rep1/data/001.03.08.H30.81.2024.K4.01.02.006.pdf</premis:contentLocationValue>
+      </premis:contentLocation>
+    </premis:storage>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>is part of</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_rep1</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+    
+  </premis:object>
+  <premis:object xsi:type="premis:file">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_file_12</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:compositionLevel>0</premis:compositionLevel>
+      
+      <premis:fixity>
+        <premis:messageDigestAlgorithm>SHA-256</premis:messageDigestAlgorithm>
+        <premis:messageDigest>[TO_BE_CALCULATED]</premis:messageDigest>
+        <premis:messageDigestOriginator></premis:messageDigestOriginator>
+      </premis:fixity>
+      
+      
+      <premis:format>
+        <premis:formatDesignation>
+          <premis:formatName>PDF</premis:formatName>
+          <premis:formatVersion>1.4 or later</premis:formatVersion>
+        </premis:formatDesignation>
+        <premis:formatNote>Portable Document Format</premis:formatNote>
+      </premis:format>
+      
+      <premis:objectCharacteristicsExtension>
+        <originalFileName>001.03.08.H30.81.2024.K4.01.02.007.pdf</originalFileName>
+        <documentTitle>Tờ trình Về việc xin duyệt giá xây dựng Pano tuyên truyền an toàn vệ sinh thực phẩm</documentTitle>
+        <creator>Chi cục Vệ sinh an toàn thực phẩm sở y tế tỉnh Hậu Giang</creator>
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:storage>
+      <premis:contentLocation>
+        <premis:contentLocationType>URI</premis:contentLocationType>
+        <premis:contentLocationValue>representations/rep1/data/001.03.08.H30.81.2024.K4.01.02.007.pdf</premis:contentLocationValue>
+      </premis:contentLocation>
+    </premis:storage>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>is part of</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_rep1</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+    
+  </premis:object>
+  <premis:object xsi:type="premis:file">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_file_13</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:compositionLevel>0</premis:compositionLevel>
+      
+      <premis:fixity>
+        <premis:messageDigestAlgorithm>SHA-256</premis:messageDigestAlgorithm>
+        <premis:messageDigest>[TO_BE_CALCULATED]</premis:messageDigest>
+        <premis:messageDigestOriginator></premis:messageDigestOriginator>
+      </premis:fixity>
+      
+      
+      <premis:format>
+        <premis:formatDesignation>
+          <premis:formatName>PDF</premis:formatName>
+          <premis:formatVersion>1.4 or later</premis:formatVersion>
+        </premis:formatDesignation>
+        <premis:formatNote>Portable Document Format</premis:formatNote>
+      </premis:format>
+      
+      <premis:objectCharacteristicsExtension>
+        <originalFileName>001.03.08.H30.81.2024.K4.01.03.001.pdf</originalFileName>
+        <creator>SỞ Y TẾ VIỆN VỆ SINH - Y TẾ CÔNG CỘNG THÀNH PHỐ HỒ CHÍ MINH</creator>
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:storage>
+      <premis:contentLocation>
+        <premis:contentLocationType>URI</premis:contentLocationType>
+        <premis:contentLocationValue>representations/rep1/data/001.03.08.H30.81.2024.K4.01.03.001.pdf</premis:contentLocationValue>
+      </premis:contentLocation>
+    </premis:storage>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>is part of</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_rep1</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+    
+  </premis:object>
+  <premis:object xsi:type="premis:file">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_file_14</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:compositionLevel>0</premis:compositionLevel>
+      
+      <premis:fixity>
+        <premis:messageDigestAlgorithm>SHA-256</premis:messageDigestAlgorithm>
+        <premis:messageDigest>[TO_BE_CALCULATED]</premis:messageDigest>
+        <premis:messageDigestOriginator></premis:messageDigestOriginator>
+      </premis:fixity>
+      
+      
+      <premis:format>
+        <premis:formatDesignation>
+          <premis:formatName>PDF</premis:formatName>
+          <premis:formatVersion>1.4 or later</premis:formatVersion>
+        </premis:formatDesignation>
+        <premis:formatNote>Portable Document Format</premis:formatNote>
+      </premis:format>
+      
+      <premis:objectCharacteristicsExtension>
+        <originalFileName>Bia_hoso03.pdf</originalFileName>
+        <documentTitle>Tập lưu sổ văn bản của Chi cục An toàn Vệ sinh Thực phẩm năm 2010</documentTitle>
+        <creator>CHI CỤC AN TOÀN VSTP</creator>
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:storage>
+      <premis:contentLocation>
+        <premis:contentLocationType>URI</premis:contentLocationType>
+        <premis:contentLocationValue>representations/rep1/data/Bia_hoso03.pdf</premis:contentLocationValue>
+      </premis:contentLocation>
+    </premis:storage>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>is part of</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_rep1</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+    
+  </premis:object>
+
+  <!-- Agent - AIP Builder Software -->
+  <premis:agent>
+    <premis:agentIdentifier>
+      <premis:agentIdentifierType>LOCAL</premis:agentIdentifierType>
+      <premis:agentIdentifierValue>unknown_</premis:agentIdentifierValue>
+    </premis:agentIdentifier>
+    
+    <premis:agentName> </premis:agentName>
+    <premis:agentType>software</premis:agentType>
+    
+    <premis:agentExtension>
+      <softwareVersion></softwareVersion>
+      <operatingSystem>Windows/Linux/macOS</operatingSystem>
+    </premis:agentExtension>
+  </premis:agent>
+
+  <!-- Agent - Repository Organization -->
+  <premis:agent>
+    <premis:agentIdentifier>
+      <premis:agentIdentifierType>LOCAL</premis:agentIdentifierType>
+      <premis:agentIdentifierValue>C_c_V_n_th__v__L_u_tr__Nh__n__c</premis:agentIdentifierValue>
+    </premis:agentIdentifier>
+    
+    <premis:agentName>Cục Văn thư và Lưu trữ Nhà nước</premis:agentName>
+    <premis:agentType>organization</premis:agentType>
+  </premis:agent>
+
+  <!-- Ingestion Event -->
+  <premis:event>
+    <premis:eventIdentifier>
+      <premis:eventIdentifierType>LOCAL</premis:eventIdentifierType>
+      <premis:eventIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918_ingestion_20250823_023918</premis:eventIdentifierValue>
+    </premis:eventIdentifier>
+    
+    <premis:eventType>ingestion</premis:eventType>
+    <premis:eventDateTime>2025-08-23T02:39:18</premis:eventDateTime>
+    
+    <premis:eventDetailInformation>
+      <premis:eventDetail>AIP package created from Excel metadata and PDF files</premis:eventDetail>
+    </premis:eventDetailInformation>
+    
+    <premis:eventOutcomeInformation>
+      <premis:eventOutcome>success</premis:eventOutcome>
+      <premis:eventOutcomeDetail>
+        <premis:eventOutcomeDetailNote>14 files successfully ingested</premis:eventOutcomeDetailNote>
+      </premis:eventOutcomeDetail>
+    </premis:eventOutcomeInformation>
+    
+    <premis:linkingAgentIdentifier>
+      <premis:linkingAgentIdentifierType>LOCAL</premis:linkingAgentIdentifierType>
+      <premis:linkingAgentIdentifierValue>unknown_</premis:linkingAgentIdentifierValue>
+      <premis:linkingAgentRole>implementer</premis:linkingAgentRole>
+    </premis:linkingAgentIdentifier>
+    
+    <premis:linkingObjectIdentifier>
+      <premis:linkingObjectIdentifierType>LOCAL</premis:linkingObjectIdentifierType>
+      <premis:linkingObjectIdentifierValue>AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918</premis:linkingObjectIdentifierValue>
+      <premis:linkingObjectRole>outcome</premis:linkingObjectRole>
+    </premis:linkingObjectIdentifier>
+  </premis:event>
+
+</premis:premis>

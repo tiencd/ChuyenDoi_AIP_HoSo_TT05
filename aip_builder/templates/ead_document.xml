@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ead xmlns="urn:isbn:1-931666-22-9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+     xsi:schemaLocation="urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd">
+    <eadheader>
+        <eadid identifier="{{ tai_lieu.objid }}">{{ tai_lieu.objid }}</eadid>
+        <filedesc>
+            <titlestmt>
+                <titleproper>{{ tai_lieu.effective_title | escape_xml }}</titleproper>
+                <author>{{ config.organization_name | escape_xml }}</author>
+            </titlestmt>
+            <publicationstmt>
+                <publisher>{{ config.organization_name | escape_xml }}</publisher>
+                <date normal="{{ created_time | format_date('%Y-%m-%d') }}">{{ created_time | format_date('%Y-%m-%d') }}</date>
+            </publicationstmt>
+        </filedesc>
+        <profiledesc>
+            <creation>Tạo bởi AIP Builder <date normal="{{ created_time | format_date('%Y-%m-%dT%H:%M:%S') }}">{{ created_time | format_date('%Y-%m-%d %H:%M:%S') }}</date></creation>
+            <langusage>
+                <language langcode="vie">Vietnamese</language>
+            </langusage>
+        </profiledesc>
+        <revisiondesc>
+            <change>
+                <date normal="{{ created_time | format_date('%Y-%m-%d') }}">{{ created_time | format_date('%Y-%m-%d') }}</date>
+                <item>Initial creation for individual document</item>
+            </change>
+        </revisiondesc>
+    </eadheader>
+    
+    <archdesc level="item" type="register">
+        <did>
+            <unitid identifier="{{ tai_lieu.objid }}">{{ tai_lieu.file_id }}</unitid>
+            <unittitle>{{ tai_lieu.effective_title | escape_xml }}</unittitle>
+            <unitdate normal="{{ tai_lieu.effective_date }}">{{ tai_lieu.effective_date }}</unitdate>
+            <physdesc>
+                <extent>1 file</extent>
+                <extent>{{ tai_lieu.dinh_dang_file or 'PDF' }} format</extent>
+                {% if tai_lieu.kich_thuoc_file %}
+                <extent>{{ "%.2f"|format(tai_lieu.kich_thuoc_file / 1024 / 1024) }} MB</extent>
+                {% endif %}
+            </physdesc>
+            <langmaterial>
+                <language langcode="vie">Vietnamese</language>
+            </langmaterial>
+            <repository>
+                <corpname>{{ hoso.organ_name | escape_xml }}</corpname>
+            </repository>
+        </did>
+        
+        <bioghist>
+            <head>Administrative History</head>
+            <p>Tài liệu thuộc hồ sơ: {{ hoso.effective_title | escape_xml }}</p>
+            <p>Mã hồ sơ lưu trữ: {{ hoso.arc_file_code }}</p>
+            <p>Cơ quan: {{ hoso.organ_name | escape_xml }}</p>
+        </bioghist>
+        
+        <scopecontent>
+            <head>Scope and Content</head>
+            <p>{{ tai_lieu.ghi_chu_tai_lieu | escape_xml if tai_lieu.ghi_chu_tai_lieu else "Tài liệu số " + tai_lieu.stt|string if tai_lieu.stt else "Tài liệu" }}</p>
+        </scopecontent>
+        
+        <accessrestrict>
+            <head>Access Restrictions</head>
+            <p>Truy cập theo quy định của {{ config.organization_name | escape_xml }}</p>
+        </accessrestrict>
+        
+        <userestrict>
+            <head>Use Restrictions</head>
+            <p>Sử dụng theo quy định pháp luật về tài liệu lưu trữ</p>
+        </userestrict>
+        
+        <processinfo>
+            <head>Processing Information</head>
+            <p>Processed by AIP Builder system on {{ created_time | format_date('%Y-%m-%d') }}</p>
+            <p>Package ID: {{ package_id }}</p>
+        </processinfo>
+        
+        <dsc type="combined">
+            <head>Detailed Description</head>
+            <c01 level="item">
+                <did>
+                    <unitid>{{ tai_lieu.file_id }}</unitid>
+                    <unittitle>{{ tai_lieu.effective_title | escape_xml }}</unittitle>
+                    <unitdate normal="{{ tai_lieu.effective_date }}">{{ tai_lieu.effective_date }}</unitdate>
+                    <physdesc>
+                        <genreform>{{ tai_lieu.dinh_dang_file or 'PDF' }}</genreform>
+                        {% if tai_lieu.kich_thuoc_file %}
+                        <extent>{{ "%.2f"|format(tai_lieu.kich_thuoc_file / 1024 / 1024) }} MB</extent>
+                        {% endif %}
+                    </physdesc>
+                </did>
+                
+                <odd>
+                    <head>Technical Details</head>
+                    <list>
+                        <item>File ID: {{ tai_lieu.file_id }}</item>
+                        <item>Original Filename: {{ tai_lieu.ten_file_goc | escape_xml if tai_lieu.ten_file_goc else tai_lieu.duong_dan_file | escape_xml }}</item>
+                        <item>Sequence: {{ tai_lieu.stt }}</item>
+                        {% if tai_lieu.checksum %}
+                        <item>Checksum: {{ tai_lieu.checksum }}</item>
+                        {% endif %}
+                        {% if tai_lieu.so_trang_tai_lieu %}
+                        <item>Pages: {{ tai_lieu.so_trang_tai_lieu }}</item>
+                        {% endif %}
+                    </list>
+                </odd>
+            </c01>
+        </dsc>
+    </archdesc>
+</ead>

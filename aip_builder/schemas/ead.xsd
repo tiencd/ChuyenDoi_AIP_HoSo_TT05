@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  EAD XML Schema v2002
+  Download from: http://www.loc.gov/ead/ead.xsd
+  
+  This is a placeholder file for EAD schema.
+  In production, download the official schema from Library of Congress.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="urn:isbn:1-931666-22-9"
+           xmlns:ead="urn:isbn:1-931666-22-9"
+           elementFormDefault="qualified">
+    
+    <!-- Placeholder schema content -->
+    <xs:element name="ead">
+        <xs:complexType>
+            <xs:anyAttribute processContents="skip"/>
+            <xs:sequence>
+                <xs:any processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+</xs:schema>

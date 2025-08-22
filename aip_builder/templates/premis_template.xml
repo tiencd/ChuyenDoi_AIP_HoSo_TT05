@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<premis:premis xmlns:premis="http://www.loc.gov/premis/v3"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.loc.gov/premis/v3 http://www.loc.gov/standards/premis/premis.xsd"
+               version="3.0">
+  
+  <!-- Intellectual Entity Object -->
+  <premis:object xsi:type="premis:intellectualEntity">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>{{ package_id }}</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:objectCharacteristicsExtension>
+        <title>{{ hoso.effective_title | escape_xml }}</title>
+        <type>AIP - Archival Information Package</type>
+        {% if hoso.arc_file_code %}
+        <identifier>{{ hoso.arc_file_code | escape_xml }}</identifier>
+        {% endif %}
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:significantProperties>
+      <premis:significantPropertiesType>Archival Record</premis:significantPropertiesType>
+      <premis:significantPropertiesValue>{{ hoso.effective_title | escape_xml }}</premis:significantPropertiesValue>
+      {% if hoso.chu_giai %}
+      <premis:significantPropertiesExtension>
+        <description>{{ hoso.chu_giai | escape_xml }}</description>
+      </premis:significantPropertiesExtension>
+      {% endif %}
+    </premis:significantProperties>
+    
+    {% if hoso.phong or hoso.muc_luc %}
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>is part of</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>FONDS</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>{{ hoso.phong | escape_xml if hoso.phong else hoso.muc_luc | escape_xml }}</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+    {% endif %}
+  </premis:object>
+
+  <!-- Representation Object -->
+  <premis:object xsi:type="premis:representation">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>{{ package_id }}_rep1</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:objectCharacteristicsExtension>
+        <representationType>Original</representationType>
+        <digitalFormatName>PDF</digitalFormatName>
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>represents</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>{{ package_id }}</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+  </premis:object>
+
+  <!-- File Objects -->
+  {% for tailieu in hoso.tai_lieu %}
+  {% if tailieu.duongDanFile %}
+  <premis:object xsi:type="premis:file">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>{{ package_id }}_file_{{ loop.index }}</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:compositionLevel>0</premis:compositionLevel>
+      
+      <premis:fixity>
+        <premis:messageDigestAlgorithm>SHA-256</premis:messageDigestAlgorithm>
+        {% if tailieu.checksum %}
+        <premis:messageDigest>{{ tailieu.checksum }}</premis:messageDigest>
+        {% else %}
+        <premis:messageDigest>[TO_BE_CALCULATED]</premis:messageDigest>
+        {% endif %}
+        <premis:messageDigestOriginator>{{ agent_name }}</premis:messageDigestOriginator>
+      </premis:fixity>
+      
+      {% if tailieu.file_size %}
+      <premis:size>{{ tailieu.file_size }}</premis:size>
+      {% endif %}
+      
+      <premis:format>
+        <premis:formatDesignation>
+          <premis:formatName>PDF</premis:formatName>
+          <premis:formatVersion>1.4 or later</premis:formatVersion>
+        </premis:formatDesignation>
+        <premis:formatNote>Portable Document Format</premis:formatNote>
+      </premis:format>
+      
+      <premis:objectCharacteristicsExtension>
+        <originalFileName>{{ tailieu.duongDanFile | basename | escape_xml }}</originalFileName>
+        {% if tailieu.trich_yeu %}
+        <documentTitle>{{ tailieu.trich_yeu | escape_xml }}</documentTitle>
+        {% endif %}
+        {% if tailieu.so_trang %}
+        <pageCount>{{ tailieu.so_trang }}</pageCount>
+        {% endif %}
+        {% if tailieu.co_quan_ban_hanh %}
+        <creator>{{ tailieu.co_quan_ban_hanh | escape_xml }}</creator>
+        {% endif %}
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:storage>
+      <premis:contentLocation>
+        <premis:contentLocationType>URI</premis:contentLocationType>
+        <premis:contentLocationValue>representations/rep1/data/{{ tailieu.filename or (tailieu.duongDanFile | basename) }}</premis:contentLocationValue>
+      </premis:contentLocation>
+    </premis:storage>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>is part of</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>{{ package_id }}_rep1</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+    
+    {% if tailieu.tinh_trang_vat_ly %}
+    <premis:significantProperties>
+      <premis:significantPropertiesType>Physical Condition</premis:significantPropertiesType>
+      <premis:significantPropertiesValue>{{ tailieu.tinh_trang_vat_ly | escape_xml }}</premis:significantPropertiesValue>
+    </premis:significantProperties>
+    {% endif %}
+  </premis:object>
+  {% endif %}
+  {% endfor %}
+
+  <!-- Agent - AIP Builder Software -->
+  <premis:agent>
+    <premis:agentIdentifier>
+      <premis:agentIdentifierType>LOCAL</premis:agentIdentifierType>
+      <premis:agentIdentifierValue>{{ agent_name | safe_filename }}_{{ agent_version }}</premis:agentIdentifierValue>
+    </premis:agentIdentifier>
+    
+    <premis:agentName>{{ agent_name }} {{ agent_version }}</premis:agentName>
+    <premis:agentType>software</premis:agentType>
+    
+    <premis:agentExtension>
+      <softwareVersion>{{ agent_version }}</softwareVersion>
+      <operatingSystem>Windows/Linux/macOS</operatingSystem>
+    </premis:agentExtension>
+  </premis:agent>
+
+  <!-- Agent - Repository Organization -->
+  <premis:agent>
+    <premis:agentIdentifier>
+      <premis:agentIdentifierType>LOCAL</premis:agentIdentifierType>
+      <premis:agentIdentifierValue>{{ config.organization_name | safe_filename if config.organization_name else 'UNKNOWN_ORG' }}</premis:agentIdentifierValue>
+    </premis:agentIdentifier>
+    
+    <premis:agentName>{{ config.organization_name or 'Unknown Organization' }}</premis:agentName>
+    <premis:agentType>organization</premis:agentType>
+  </premis:agent>
+
+  <!-- Ingestion Event -->
+  <premis:event>
+    <premis:eventIdentifier>
+      <premis:eventIdentifierType>LOCAL</premis:eventIdentifierType>
+      <premis:eventIdentifierValue>{{ package_id }}_ingestion_{{ creation_date | format_date('%Y%m%d_%H%M%S') }}</premis:eventIdentifierValue>
+    </premis:eventIdentifier>
+    
+    <premis:eventType>ingestion</premis:eventType>
+    <premis:eventDateTime>{{ creation_date | format_date }}</premis:eventDateTime>
+    
+    <premis:eventDetailInformation>
+      <premis:eventDetail>AIP package created from Excel metadata and PDF files</premis:eventDetail>
+    </premis:eventDetailInformation>
+    
+    <premis:eventOutcomeInformation>
+      <premis:eventOutcome>success</premis:eventOutcome>
+      <premis:eventOutcomeDetail>
+        <premis:eventOutcomeDetailNote>{{ hoso.tai_lieu | length }} files successfully ingested</premis:eventOutcomeDetailNote>
+      </premis:eventOutcomeDetail>
+    </premis:eventOutcomeInformation>
+    
+    <premis:linkingAgentIdentifier>
+      <premis:linkingAgentIdentifierType>LOCAL</premis:linkingAgentIdentifierType>
+      <premis:linkingAgentIdentifierValue>{{ agent_name | safe_filename }}_{{ agent_version }}</premis:linkingAgentIdentifierValue>
+      <premis:linkingAgentRole>implementer</premis:linkingAgentRole>
+    </premis:linkingAgentIdentifier>
+    
+    <premis:linkingObjectIdentifier>
+      <premis:linkingObjectIdentifierType>LOCAL</premis:linkingObjectIdentifierType>
+      <premis:linkingObjectIdentifierValue>{{ package_id }}</premis:linkingObjectIdentifierValue>
+      <premis:linkingObjectRole>outcome</premis:linkingObjectRole>
+    </premis:linkingObjectIdentifier>
+  </premis:event>
+
+</premis:premis>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:mets="http://www.loc.gov/METS/"
+           xmlns:xlink="http://www.w3.org/1999/xlink"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/mets.xsd"
+           OBJID="{{ hoso.objid }}"
+           LABEL="{{ hoso.effective_title | escape_xml }}"
+           TYPE="AIP"
+           PROFILE="https://eark-project.com/E-ARK-CSIP-1.2">
+  
+  <!-- METS Header -->
+  <mets:metsHdr CREATEDATE="{{ created_time | format_date('%Y-%m-%dT%H:%M:%S') }}"
+                LASTMODDATE="{{ created_time | format_date('%Y-%m-%dT%H:%M:%S') }}">
+    <mets:agent ROLE="CREATOR" TYPE="OTHER" OTHERTYPE="SOFTWARE">
+      <mets:name>AIP Builder v1.0</mets:name>
+      <mets:note>Enhanced CSIP 1.2 compliant AIP package with UUID identifiers</mets:note>
+    </mets:agent>
+    <mets:agent ROLE="ARCHIVIST" TYPE="ORGANIZATION">
+      <mets:name>{{ config.organization_name | escape_xml }}</mets:name>
+    </mets:agent>
+  </mets:metsHdr>
+  
+  <!-- Descriptive Metadata Section - Using mdRef for external references -->
+  <mets:dmdSec ID="dmd-{{ hoso.file_id }}">
+    <mets:mdRef LOCTYPE="URL" MDTYPE="EAD" 
+                HREF="metadata/descriptive/ead.xml"
+                xlink:type="simple"
+                CREATED="{{ created_time | format_date('%Y-%m-%dT%H:%M:%S') }}"/>
+  </mets:dmdSec>
+  
+  <!-- Administrative Metadata -->
+  <mets:amdSec ID="amd-{{ hoso.file_id }}">
+    <mets:techMD ID="tech-{{ hoso.file_id }}">
+      <mets:mdRef LOCTYPE="URL" MDTYPE="PREMIS" 
+                  HREF="metadata/preservation/premis.xml"
+                  xlink:type="simple"
+                  CREATED="{{ created_time | format_date('%Y-%m-%dT%H:%M:%S') }}"/>
+    </mets:techMD>
+  </mets:amdSec>
+
+  <!-- File Section -->
+  <mets:fileSec>
+    <!-- Representation Files -->
+    <mets:fileGrp ID="rep-filegroup" USE="Representation">
+      <mets:file ID="rep-{{ hoso.file_id }}" MIMETYPE="application/xml">
+        <mets:FLocat LOCTYPE="URL" xlink:href="representations/rep1/METS.xml" xlink:type="simple"/>
+      </mets:file>
+    </mets:fileGrp>
+    
+    <!-- Schema Files -->
+    <mets:fileGrp ID="schema-filegroup" USE="Schema">
+      <mets:file ID="schema-mets" MIMETYPE="application/xml">
+        <mets:FLocat LOCTYPE="URL" xlink:href="schemas/mets.xsd" xlink:type="simple"/>
+      </mets:file>
+      <mets:file ID="schema-ead" MIMETYPE="application/xml">
+        <mets:FLocat LOCTYPE="URL" xlink:href="schemas/ead.xsd" xlink:type="simple"/>
+      </mets:file>
+      <mets:file ID="schema-premis" MIMETYPE="application/xml">
+        <mets:FLocat LOCTYPE="URL" xlink:href="schemas/premis.xsd" xlink:type="simple"/>
+      </mets:file>
+    </mets:fileGrp>
+  </mets:fileSec>
+
+  <!-- Structure Map - Package Level -->
+  <mets:structMap ID="csip" TYPE="physical">
+    <mets:div ID="package-{{ hoso.file_id }}" TYPE="AIP" LABEL="{{ hoso.effective_title | escape_xml }}" DMDID="dmd-{{ hoso.file_id }}" ADMID="amd-{{ hoso.file_id }}">
+      
+      <!-- Representations -->
+      <mets:div ID="representations" TYPE="representations" LABEL="Representations">
+        <mets:div ID="rep1" TYPE="representation" LABEL="Representation 1">
+          <mets:mptr LOCTYPE="URL" xlink:href="representations/rep1/METS.xml" xlink:type="simple"/>
+        </mets:div>
+      </mets:div>
+      
+      <!-- Metadata -->
+      <mets:div ID="metadata" TYPE="metadata" LABEL="Metadata">
+        <mets:div ID="descriptive" TYPE="descriptive" LABEL="Descriptive Metadata">
+          <mets:mptr LOCTYPE="URL" xlink:href="metadata/descriptive/ead.xml" xlink:type="simple"/>
+        </mets:div>
+        <mets:div ID="preservation" TYPE="preservation" LABEL="Preservation Metadata">
+          <mets:mptr LOCTYPE="URL" xlink:href="metadata/preservation/premis.xml" xlink:type="simple"/>
+        </mets:div>
+      </mets:div>
+      
+      <!-- Schemas -->
+      <mets:div ID="schemas" TYPE="schemas" LABEL="Schema Files">
+        <mets:fptr FILEID="schema-mets"/>
+        <mets:fptr FILEID="schema-ead"/>
+        <mets:fptr FILEID="schema-premis"/>
+      </mets:div>
+      
+    </mets:div>
+  </mets:structMap>
+
+</mets:mets>

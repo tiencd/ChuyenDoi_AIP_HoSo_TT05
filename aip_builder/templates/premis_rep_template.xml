@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<premis:premis xmlns:premis="http://www.loc.gov/premis/v3"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.loc.gov/premis/v3 http://www.loc.gov/standards/premis/premis.xsd"
+               version="3.0">
+  
+  <!-- Representation Object for rep1 -->
+  <premis:object xsi:type="premis:representation">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>{{ package_id }}_rep1</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:objectCharacteristicsExtension>
+        <representationType>Original</representationType>
+        <digitalFormatName>PDF</digitalFormatName>
+        <purpose>Original digital representation of archival records</purpose>
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>represents</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>{{ package_id }}</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+  </premis:object>
+
+  <!-- File Objects - detailed for each file in representation -->
+  {%- for tai_lieu in hoso.tai_lieu %}
+  <premis:object xsi:type="premis:file">
+    <premis:objectIdentifier>
+      <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
+      <premis:objectIdentifierValue>{{ package_id }}_{{ tai_lieu.file_id }}</premis:objectIdentifierValue>
+    </premis:objectIdentifier>
+    
+    <premis:objectCharacteristics>
+      <premis:compositionLevel>0</premis:compositionLevel>
+      
+      <premis:fixity>
+        <premis:messageDigestAlgorithm>SHA-256</premis:messageDigestAlgorithm>
+        <premis:messageDigest>{{ tai_lieu.checksum or '0' * 64 }}</premis:messageDigest>
+        <premis:messageDigestOriginator>{{ config.organization_name }}</premis:messageDigestOriginator>
+      </premis:fixity>
+      
+      <premis:size>{{ tai_lieu.file_size or 0 }}</premis:size>
+      
+      <premis:format>
+        <premis:formatDesignation>
+          <premis:formatName>PDF</premis:formatName>
+          <premis:formatVersion>1.4 or later</premis:formatVersion>
+        </premis:formatDesignation>
+        <premis:formatNote>Portable Document Format</premis:formatNote>
+      </premis:format>
+      
+      <premis:objectCharacteristicsExtension>
+        <originalFileName>{{ tai_lieu.filename or tai_lieu.duongDanFile | basename }}</originalFileName>
+        <documentTitle>{{ tai_lieu.effective_title | escape_xml }}</documentTitle>
+        {%- if tai_lieu.so_trang %}
+        <pageCount>{{ tai_lieu.so_trang }}</pageCount>
+        {%- endif %}
+        {%- if tai_lieu.co_quan_ban_hanh %}
+        <creator>{{ tai_lieu.co_quan_ban_hanh | escape_xml }}</creator>
+        {%- endif %}
+      </premis:objectCharacteristicsExtension>
+    </premis:objectCharacteristics>
+    
+    <premis:storage>
+      <premis:contentLocation>
+        <premis:contentLocationType>URI</premis:contentLocationType>
+        <premis:contentLocationValue>data/{{ tai_lieu.filename or tai_lieu.duongDanFile | basename }}</premis:contentLocationValue>
+      </premis:contentLocation>
+    </premis:storage>
+    
+    <premis:relationship>
+      <premis:relationshipType>structural</premis:relationshipType>
+      <premis:relationshipSubType>is part of</premis:relationshipSubType>
+      <premis:relatedObjectIdentification>
+        <premis:relatedObjectIdentifierType>LOCAL</premis:relatedObjectIdentifierType>
+        <premis:relatedObjectIdentifierValue>{{ package_id }}_rep1</premis:relatedObjectIdentifierValue>
+      </premis:relatedObjectIdentification>
+    </premis:relationship>
+    
+  </premis:object>
+  {%- endfor %}
+
+  <!-- Agent - Processing Software (representation level) -->
+  <premis:agent>
+    <premis:agentIdentifier>
+      <premis:agentIdentifierType>LOCAL</premis:agentIdentifierType>
+      <premis:agentIdentifierValue>aip_builder_system_rep</premis:agentIdentifierValue>
+    </premis:agentIdentifier>
+    
+    <premis:agentName>AIP Builder System - Representation Processor</premis:agentName>
+    <premis:agentType>software</premis:agentType>
+    
+    <premis:agentExtension>
+      <softwareVersion>2.0</softwareVersion>
+      <operatingSystem>Windows/Linux/macOS</operatingSystem>
+      <function>Representation-level metadata processing</function>
+    </premis:agentExtension>
+  </premis:agent>
+
+  <!-- Validation Event for representation -->
+  <premis:event>
+    <premis:eventIdentifier>
+      <premis:eventIdentifierType>LOCAL</premis:eventIdentifierType>
+      <premis:eventIdentifierValue>{{ package_id }}_rep1_validation_{{ created_time.strftime('%Y%m%d_%H%M%S') }}</premis:eventIdentifierValue>
+    </premis:eventIdentifier>
+    
+    <premis:eventType>validation</premis:eventType>
+    <premis:eventDateTime>{{ created_time.isoformat() }}+07:00</premis:eventDateTime>
+    
+    <premis:eventDetailInformation>
+      <premis:eventDetail>Representation-level validation of PDF files and metadata</premis:eventDetail>
+    </premis:eventDetailInformation>
+    
+    <premis:eventOutcomeInformation>
+      <premis:eventOutcome>success</premis:eventOutcome>
+      <premis:eventOutcomeDetail>
+        <premis:eventOutcomeDetailNote>{{ hoso.tai_lieu|length }} files in representation validated successfully</premis:eventOutcomeDetailNote>
+      </premis:eventOutcomeDetail>
+    </premis:eventOutcomeInformation>
+    
+    <premis:linkingAgentIdentifier>
+      <premis:linkingAgentIdentifierType>LOCAL</premis:linkingAgentIdentifierType>
+      <premis:linkingAgentIdentifierValue>aip_builder_system_rep</premis:linkingAgentIdentifierValue>
+      <premis:linkingAgentRole>validator</premis:linkingAgentRole>
+    </premis:linkingAgentIdentifier>
+    
+    <premis:linkingObjectIdentifier>
+      <premis:linkingObjectIdentifierType>LOCAL</premis:linkingObjectIdentifierType>
+      <premis:linkingObjectIdentifierValue>{{ package_id }}_rep1</premis:linkingObjectIdentifierValue>
+      <premis:linkingObjectRole>outcome</premis:linkingObjectRole>
+    </premis:linkingObjectIdentifier>
+  </premis:event>
+
+</premis:premis>

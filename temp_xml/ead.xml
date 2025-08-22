@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ead xmlns="urn:isbn:1-931666-22-9"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd">
+  
+  <eadheader repositoryencoding="iso15511" 
+             countryencoding="iso3166-1" 
+             dateencoding="iso8601" 
+             langencoding="iso639-2b">
+    <eadid countrycode="VN" 
+           mainagencycode="VN-CVTLT"
+           repositorycode="NARA">AIP_T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th__20250823_023918</eadid>
+    
+    <filedesc>
+      <titlestmt>
+        <titleproper>Tập lưu văn bản đi của Chi cục An toàn Vệ sinh Thực phẩm tháng 01 đến tháng 6 năm 2010. Từ số: 01 - 35. Khuyết số: 03 -11, 13 - 22, 24 - 27, 32, 34, 36, 38, 39, 41, 42, 44, 45, 47, 50, 54 - 58, 61 - 65, 74, 79, 81, 83, 84, 87, 91, 96, 97, 99 - 102, 104 - 108, 113, 117, 121 - 123, 126, 127, 134, 135</titleproper>
+        <author></author>
+      </titlestmt>
+      
+      <publicationstmt>
+        <publisher>Cục Văn thư và Lưu trữ Nhà nước</publisher>
+        <date>2025</date>
+      </publicationstmt>
+      
+      <notestmt>
+        <note>
+          <p>Được tạo tự động bởi   vào 2025-08-23</p>
+        </note>
+      </notestmt>
+    </filedesc>
+    
+    <profiledesc>
+      <creation>Hồ sơ được số hóa từ tài liệu gốc 2025</creation>
+      <langusage>Tài liệu bằng <language langcode="vie">Tiếng Việt</language></langusage>
+    </profiledesc>
+  </eadheader>
+  
+  <archdesc level="file" type="inventory">
+    <did>
+      <unitid repositorycode="NARA"
+              countrycode="VN">T_p_l_u_v_n_b_n__i_c_a_Chi_c_c_An_to_n_V__sinh_Th_</unitid>
+      
+      <unittitle>Tập lưu văn bản đi của Chi cục An toàn Vệ sinh Thực phẩm tháng 01 đến tháng 6 năm 2010. Từ số: 01 - 35. Khuyết số: 03 -11, 13 - 22, 24 - 27, 32, 34, 36, 38, 39, 41, 42, 44, 45, 47, 50, 54 - 58, 61 - 65, 74, 79, 81, 83, 84, 87, 91, 96, 97, 99 - 102, 104 - 108, 113, 117, 121 - 123, 126, 127, 134, 135</unittitle>
+      
+      <unitdate normal="2010/2010" 
+                type="inclusive">2010</unitdate>
+      
+      <physdesc>
+        <extent>279 tờ</extent>
+      </physdesc>
+      
+      <repository>
+        <corpname>Chi cục An toàn vệ sinh thực phẩm</corpname>
+      </repository>
+      
+      <langmaterial>
+        <language langcode="vie">Tiếng Việt</language>
+      </langmaterial>
+    </did>
+    
+    
+    
+    <appraisal>
+      <head>Thời hạn bảo quản</head>
+      <p>Vĩnh viễn</p>
+    </appraisal>
+    
+    
+    
+    <!-- Danh sách tài liệu trong hồ sơ -->
+    <dsc type="combined">
+      <head>Danh mục tài liệu</head>
+      <c01 level="item">
+        <did>
+          <unitid>1</unitid>
+          
+          <unittitle>Quyết định Về việc ban hành Quy chế chi tiêu nội bộ của Chi cục An toàn vệ sinh thực phẩm</unittitle>
+          
+          <unitdate normal="2010">2010</unitdate>
+          
+          
+          <langmaterial>
+            <language>Tiếng Việt</language>
+          </langmaterial>
+        </did>
+        
+        <origination>
+          <corpname>Sở y tế Hậu Giang chi cục an toàn vệ sinh thực phẩm</corpname>
+        </origination>
+        
+        
+        
+        <dao xlink:href="representations/rep1/data/001.03.08.H30.81.2024.K4.01.01.001.pdf" 
+             xlink:type="simple" 
+             xlink:role="image-service">
+          <daodesc>
+            <p>Tệp số: 001.03.08.H30.81.2024.K4.01.01.001.pdf</p>
+          </daodesc>
+        </dao>
+      </c01>
+      <c01 level="item">
+        <did>
+          <unitid>2</unitid>
+          
+          <unittitle>Bảng mô tả công việc cá nhân - phòng thông tin truyền thông và quản lý nghiệp vụ điều kiện thực phẩm</unittitle>
+          
+          <unitdate normal="2010">2010</unitdate>
+          
+          
+          <langmaterial>
+            <language>Tiếng Việt</language>
+          </langmaterial>
+        </did>
+        
+        <origination>
+          <corpname>Chị cục an toàn vệ sinh thực phẩm - phồng thông tin truyền thông và quản lý nghiệp vụ điều kiện thực phẩm</corpname>
+        </origination>
+        
+        
+        
+        <dao xlink:href="representations/rep1/data/001.03.08.H30.81.2024.K4.01.01.002.pdf" 
+             xlink:type="simple" 
+             xlink:role="image-service">
+          <daodesc>
+            <p>Tệp số: 001.03.08.H30.81.2024.K4.01.01.002.pdf</p>
+          </daodesc>
+        </dao>
+      </c01>
+      <c01 level="item">
+        <did>
+          <unitid>3</unitid>
+          
+          <unittitle>BÁO CÁO KẾT QUẢ VỆ SINH AN TOÀN THỰC PHẨM CÁC CƠ SỞ KINH DOANH RƯỢU NĂM 2010</unittitle>
+          
+          <unitdate normal="2010">2010</unitdate>
+          
+          
+          <langmaterial>
+            <language>Tiếng Việt</language>
+          </langmaterial>
+        </did>
+        
+        <origination>
+          <corpname>SỞ Y TẾ HẬU GIANG CHI CỤC AN TOÀN VỆ SINH THỰC PHẨM</corpname>
+        </origination>
+        
+        
+        
+        <dao xlink:href="representations/rep1/data/001.03.08.H30.81.2024.K4.01.01.003.pdf" 
+             xlink:type="simple" 
+             xlink:role="image-service">
+          <daodesc>
+            <p>Tệp số: 001.03.08.H30.81.2024.K4.01.01.003.pdf</p>
+          </daodesc>
+        </dao>
+      </c01>
+      <c01 level="item">
+        <did>
+          <unitid>4</unitid>
+          
+          <unittitle>Quyết định Về việc Ban hành quy chế làm việc của Chi cục An toàn vệ sinh thực phẩm</unittitle>
+          
+          <unitdate normal="2010">2010</unitdate>
+          
+          
+          <langmaterial>
+            <language>Tiếng Việt</language>
+          </langmaterial>
+        </did>
+        
+        <origination>
+          <corpname>Sở y tế Hậu Giang chi cục an toàn vệ sinh thực phẩm</corpname>
+        </origination>
+        
+        
+        
+        <dao xlink:href="representations/rep1/data/001.03.08.H30.81.2024.K4.01.01.004.pdf" 
+             xlink:type="simple" 
+             xlink:role="image-service">
+          <daodesc>
+            <p>Tệp số: 001.03.08.H30.81.2024.K4.01.01.004.pdf</p>
+          </daodesc>
+        </dao>
+      </c01>
+      <c01 level="item">
+        <did>
+          <unitid>5</unitid>
+          
+          <unittitle>Hợp đồng trách nhiệm Về việc xét nghiệm mẫu thực phẩm năm 2010</unittitle>
+          
+          <unitdate normal="2010">2010</unitdate>
+          
+          
+          <langmaterial>
+            <language>Tiếng Việt</language>
+          </langmaterial>
+        </did>
+        
+        <origination>
+          <corpname>Sở y tế Hậu Giang chi cục an toàn vệ sinh thực phẩm</corpname>
+        </origination>
+        
+        
+        
+        <dao xlink:href="representations/rep1/data/001.03.08.H30.81.2024.K4.01.01.005.pdf" 
+             xlink:type="simple" 
+             xlink:role="image-service">
+          <daodesc>
+            <p>Tệp số: 001.03.08.H30.81.2024.K4.01.01.005.pdf</p>
+          </daodesc>
+        </dao>
+      </c01>
+      <c01 level="item">
+        <did>
+          <unitid>1</unitid>
+          
+          <unittitle>Giấy thôi trả lương (Ông Trần Văn Nhâm)</unittitle>
+          
+          <unitdate normal="2010">2010</unitdate>
+          
+          
+          <langmaterial>
+            <language>Tiếng Việt</language>
+          </langmaterial>
+        </did>
+        
+        <origination>
+          <corpname>Chi cục Vệ sinh an toàn thực phẩm sở y tế tỉnh Hậu Giang</corpname>
+        </origination>
+        
+        
+        
+        <dao xlink:href="representations/rep1/data/001.03.08.H30.81.2024.K4.01.02.001.pdf" 
+             xlink:type="simple" 
+             xlink:role="image-service">
+          <daodesc>
+            <p>Tệp số: 001.03.08.H30.81.2024.K4.01.02.001.pdf</p>
+          </daodesc>
+        </dao>
+      </c01>
+      <c01 level="item">
+        <did>
+          <unitid>2</unitid>
+          
+          <unittitle>Công văn Về việc xin bổ sung kinh phí năm 2010.</unittitle>
+          
+          <unitdate normal="2010">2010</unitdate>
+          
+          
+          <langmaterial>
+            <language>Tiếng Việt</language>
+          </langmaterial>
+        </did>
+        
+        <origination>
+          <corpname>Chi cục Vệ sinh an toàn thực phẩm sở y tế tỉnh Hậu Giang</corpname>
+        </origination>
+        
+        
+        
+        <dao xlink:href="representations/rep1/data/001.03.08.H30.81.2024.K4.01.02.002.pdf" 
+             xlink:type="simple" 
+             xlink:role="image-service">
+          <daodesc>
+            <p>Tệp số: 001.03.08.H30.81.2024.K4.01.02.002.pdf</p>
+          </daodesc>
+        </dao>
+      </c01>
+      <c01 level="item">
+        <did>
+          <unitid>3</unitid>
+          
+          <unittitle>Tờ trình Về việc xin cấp bổ sung dự toán điều động nhà trọ</unittitle>
+          
+          <unitdate normal="2010">2010</unitdate>
+          
+          
+          <langmaterial>
+            <language>Tiếng Việt</language>
+          </langmaterial>
+        </did>
+        
+        <origination>
+          <corpname>Chi cục Vệ sinh an toàn thực phẩm sở y tế tỉnh Hậu Giang</corpname>
+        </origination>
+        
+        
+        
+        <dao xlink:href="representations/rep1/data/001.03.08.H30.81.2024.K4.01.02.003.pdf" 
+             xlink:type="simple" 
+             xlink:role="image-service">
+          <daodesc>
+            <p>Tệp số: 001.03.08.H30.81.2024.K4.01.02.003.pdf</p>
+          </daodesc>
+        </dao>
+      </c01>
+      <c01 level="item">
+        <did>
+          <unitid>4</unitid>
+          
+          <unittitle>Công văn Về việc Quyết toán kinh phí Chương trình mục tiêu VSATTP năm 2010.</unittitle>
+          
+          <unitdate normal="2010">2010</unitdate>
+          
+          
+          <langmaterial>
+            <language>Tiếng Việt</language>
+          </langmaterial>
+        </did>
+        
+        <origination>
+          <corpname>Chi cục Vệ sinh an toàn thực phẩm sở y tế tỉnh Hậu Giang</corpname>
+        </origination>
+        
+        
+        
+        <dao xlink:href="representations/rep1/data/001.03.08.H30.81.2024.K4.01.02.004.pdf" 
+             xlink:type="simple" 
+             xlink:role="image-service">
+          <daodesc>
+            <p>Tệp số: 001.03.08.H30.81.2024.K4.01.02.004.pdf</p>
+          </daodesc>
+        </dao>
+      </c01>
+      <c01 level="item">
+        <did>
+          <unitid>5</unitid>
+          
+          <unittitle>Tờ trình Về việc xin mua xe mô tô</unittitle>
+          
+          <unitdate normal="2010">2010</unitdate>
+          
+          
+          <langmaterial>
+            <language>Tiếng Việt</language>
+          </langmaterial>
+        </did>
+        
+        <origination>
+          <corpname>SỞ Y TẾ HẬU GIANG CHI CỤC AN TOÀN VỆ SINH THỰC PHẨM</corpname>
+        </origination>
+        
+        
+        
+        <dao xlink:href="representations/rep1/data/001.03.08.H30.81.2024.K4.01.02.005.pdf" 
+             xlink:type="simple" 
+             xlink:role="image-service">
+          <daodesc>
+            <p>Tệp số: 001.03.08.H30.81.2024.K4.01.02.005.pdf</p>
+          </daodesc>
+        </dao>
+      </c01>
+      <c01 level="item">
+        <did>
+          <unitid>6</unitid>
+          
+          <unittitle>Hợp đồng Về việc xét nghiệm mẫu thực phẩm Quí I và Quí II năm 2010</unittitle>
+          
+          <unitdate normal="2010">2010</unitdate>
+          
+          
+          <langmaterial>
+            <language>Tiếng Việt</language>
+          </langmaterial>
+        </did>
+        
+        <origination>
+          <corpname>Chi cục Vệ sinh an toàn thực phẩm sở y tế tỉnh Hậu Giang</corpname>
+        </origination>
+        
+        
+        
+        <dao xlink:href="representations/rep1/data/001.03.08.H30.81.2024.K4.01.02.006.pdf" 
+             xlink:type="simple" 
+             xlink:role="image-service">
+          <daodesc>
+            <p>Tệp số: 001.03.08.H30.81.2024.K4.01.02.006.pdf</p>
+          </daodesc>
+        </dao>
+      </c01>
+      <c01 level="item">
+        <did>
+          <unitid>7</unitid>
+          
+          <unittitle>Tờ trình Về việc xin duyệt giá xây dựng Pano tuyên truyền an toàn vệ sinh thực phẩm</unittitle>
+          
+          <unitdate normal="2010">2010</unitdate>
+          
+          
+          <langmaterial>
+            <language>Tiếng Việt</language>
+          </langmaterial>
+        </did>
+        
+        <origination>
+          <corpname>Chi cục Vệ sinh an toàn thực phẩm sở y tế tỉnh Hậu Giang</corpname>
+        </origination>
+        
+        
+        
+        <dao xlink:href="representations/rep1/data/001.03.08.H30.81.2024.K4.01.02.007.pdf" 
+             xlink:type="simple" 
+             xlink:role="image-service">
+          <daodesc>
+            <p>Tệp số: 001.03.08.H30.81.2024.K4.01.02.007.pdf</p>
+          </daodesc>
+        </dao>
+      </c01>
+      <c01 level="item">
+        <did>
+          <unitid>1</unitid>
+          
+          <unittitle>Tài liệu không có tiêu đề</unittitle>
+          
+          
+          
+          <langmaterial>
+            <language>Tiếng Việt</language>
+          </langmaterial>
+        </did>
+        
+        <origination>
+          <corpname>SỞ Y TẾ VIỆN VỆ SINH - Y TẾ CÔNG CỘNG THÀNH PHỐ HỒ CHÍ MINH</corpname>
+        </origination>
+        
+        
+        
+        <dao xlink:href="representations/rep1/data/001.03.08.H30.81.2024.K4.01.03.001.pdf" 
+             xlink:type="simple" 
+             xlink:role="image-service">
+          <daodesc>
+            <p>Tệp số: 001.03.08.H30.81.2024.K4.01.03.001.pdf</p>
+          </daodesc>
+        </dao>
+      </c01>
+      <c01 level="item">
+        <did>
+          <unitid>2</unitid>
+          
+          <unittitle>Tập lưu sổ văn bản của Chi cục An toàn Vệ sinh Thực phẩm năm 2010</unittitle>
+          
+          <unitdate normal="2009">2009</unitdate>
+          
+          
+          <langmaterial>
+            <language>Tiếng Việt</language>
+          </langmaterial>
+        </did>
+        
+        <origination>
+          <corpname>CHI CỤC AN TOÀN VSTP</corpname>
+        </origination>
+        
+        
+        
+        <dao xlink:href="representations/rep1/data/Bia_hoso03.pdf" 
+             xlink:type="simple" 
+             xlink:role="image-service">
+          <daodesc>
+            <p>Tệp số: Bia_hoso03.pdf</p>
+          </daodesc>
+        </dao>
+      </c01>
+    </dsc>
+    
+    <!-- Ghi chú chung -->
+    
+  </archdesc>
+</ead>

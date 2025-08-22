@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ead xmlns="urn:isbn:1-931666-22-9"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd">
+  
+  <eadheader repositoryencoding="iso15511" 
+             countryencoding="iso3166-1" 
+             dateencoding="iso8601" 
+             langencoding="iso639-2b">
+    <eadid countrycode="VN" 
+           mainagencycode="{{ config.agency_code or 'VN-UNKNOWN' }}"
+           repositorycode="{{ config.repository_code or 'REPO' }}">{{ package_id }}</eadid>
+    
+    <filedesc>
+      <titlestmt>
+        <titleproper>{{ hoso.effective_title | escape_xml }}</titleproper>
+        <author>{{ agent_name }}</author>
+      </titlestmt>
+      
+      <publicationstmt>
+        <publisher>{{ config.organization_name or 'Vietnam National Archives' }}</publisher>
+        <date>{{ creation_date | format_date('%Y') }}</date>
+      </publicationstmt>
+      
+      <notestmt>
+        <note>
+          <p>Được tạo tự động bởi {{ agent_name }} {{ agent_version }} vào {{ creation_date | format_date('%Y-%m-%d') }}</p>
+        </note>
+      </notestmt>
+    </filedesc>
+    
+    <profiledesc>
+      <creation>Hồ sơ được số hóa từ tài liệu gốc {{ creation_date | format_date('%Y') }}</creation>
+      <langusage>Tài liệu bằng <language langcode="vie">Tiếng Việt</language></langusage>
+    </profiledesc>
+  </eadheader>
+  
+  <archdesc level="file" type="inventory">
+    <did>
+      <unitid repositorycode="{{ config.repository_code or 'REPO' }}"
+              countrycode="VN">{{ hoso.arc_file_code | escape_xml }}</unitid>
+      
+      <unittitle>{{ hoso.effective_title | escape_xml }}</unittitle>
+      
+      {% if hoso.nam_bd and hoso.nam_kt %}
+      <unitdate normal="{{ hoso.nam_bd }}/{{ hoso.nam_kt }}" 
+                type="inclusive">{{ hoso.nam_bd }}{% if hoso.nam_bd != hoso.nam_kt %}-{{ hoso.nam_kt }}{% endif %}</unitdate>
+      {% endif %}
+      
+      {% if hoso.so_luong_to %}
+      <physdesc>
+        <extent>{{ hoso.so_luong_to }} tờ</extent>
+      </physdesc>
+      {% endif %}
+      
+      {% if hoso.phong %}
+      <repository>
+        <corpname>{{ hoso.phong | escape_xml }}</corpname>
+      </repository>
+      {% endif %}
+      
+      {% if hoso.ngon_ngu %}
+      <langmaterial>
+        <language langcode="vie">{{ hoso.ngon_ngu | escape_xml }}</language>
+      </langmaterial>
+      {% endif %}
+    </did>
+    
+    {% if hoso.chu_giai %}
+    <scopecontent>
+      <head>Phạm vi và nội dung</head>
+      <p>{{ hoso.chu_giai | escape_xml }}</p>
+    </scopecontent>
+    {% endif %}
+    
+    {% if hoso.che_do_su_dung %}
+    <accessrestrict>
+      <head>Điều kiện tiếp cận</head>
+      <p>{{ hoso.che_do_su_dung | escape_xml }}</p>
+    </accessrestrict>
+    {% endif %}
+    
+    {% if hoso.thoi_han_bao_quan %}
+    <appraisal>
+      <head>Thời hạn bảo quản</head>
+      <p>{{ hoso.thoi_han_bao_quan | escape_xml }}</p>
+    </appraisal>
+    {% endif %}
+    
+    {% if hoso.tu_khoa %}
+    <controlaccess>
+      <head>Từ khóa</head>
+      <subject>{{ hoso.tu_khoa | escape_xml }}</subject>
+    </controlaccess>
+    {% endif %}
+    
+    {% if hoso.tinh_trang_vat_ly %}
+    <phystech>
+      <head>Tình trạng vật lý</head>
+      <p>{{ hoso.tinh_trang_vat_ly | escape_xml }}</p>
+    </phystech>
+    {% endif %}
+    
+    <!-- Danh sách tài liệu trong hồ sơ -->
+    {% if hoso.tai_lieu %}
+    <dsc type="combined">
+      <head>Danh mục tài liệu</head>
+      {% for tailieu in hoso.tai_lieu %}
+      <c01 level="item">
+        <did>
+          {% if tailieu.stt %}
+          <unitid>{{ tailieu.stt }}</unitid>
+          {% endif %}
+          
+          <unittitle>{{ tailieu.trich_yeu | escape_xml if tailieu.trich_yeu else 'Tài liệu không có tiêu đề' }}</unittitle>
+          
+          {% if tailieu.nam_van_ban %}
+          <unitdate normal="{{ tailieu.nam_van_ban }}">{{ tailieu.nam_van_ban }}</unitdate>
+          {% endif %}
+          
+          {% if tailieu.so_trang %}
+          <physdesc>
+            <extent>{{ tailieu.so_trang }} trang</extent>
+          </physdesc>
+          {% endif %}
+          
+          {% if tailieu.ngon_ngu %}
+          <langmaterial>
+            <language>{{ tailieu.ngon_ngu | escape_xml }}</language>
+          </langmaterial>
+          {% endif %}
+        </did>
+        
+        {% if tailieu.co_quan_ban_hanh %}
+        <origination>
+          <corpname>{{ tailieu.co_quan_ban_hanh | escape_xml }}</corpname>
+        </origination>
+        {% endif %}
+        
+        {% if tailieu.ghi_chu %}
+        <note>
+          <p>{{ tailieu.ghi_chu | escape_xml }}</p>
+        </note>
+        {% endif %}
+        
+        {% if tailieu.tinh_trang_vat_ly %}
+        <phystech>
+          <p>{{ tailieu.tinh_trang_vat_ly | escape_xml }}</p>
+        </phystech>
+        {% endif %}
+        
+        {% if tailieu.duongDanFile %}
+        <dao xlink:href="representations/rep1/data/{{ tailieu.filename or (tailieu.duongDanFile | basename) }}" 
+             xlink:type="simple" 
+             xlink:role="image-service">
+          <daodesc>
+            <p>Tệp số: {{ tailieu.filename or (tailieu.duongDanFile | basename) }}</p>
+          </daodesc>
+        </dao>
+        {% endif %}
+      </c01>
+      {% endfor %}
+    </dsc>
+    {% endif %}
+    
+    <!-- Ghi chú chung -->
+    {% if hoso.ghi_chu %}
+    <odd>
+      <head>Ghi chú</head>
+      <p>{{ hoso.ghi_chu | escape_xml }}</p>
+    </odd>
+    {% endif %}
+    
+  </archdesc>
+</ead>

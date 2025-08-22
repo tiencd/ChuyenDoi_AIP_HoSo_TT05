@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  PREMIS XML Schema v3.0
+  Download from: http://www.loc.gov/standards/premis/premis.xsd
+  
+  This is a placeholder file for PREMIS schema.
+  In production, download the official schema from Library of Congress.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="info:lc/xmlns/premis-v3"
+           xmlns:premis="info:lc/xmlns/premis-v3"
+           elementFormDefault="qualified">
+    
+    <!-- Placeholder schema content -->
+    <xs:element name="premis">
+        <xs:complexType>
+            <xs:anyAttribute processContents="skip"/>
+            <xs:sequence>
+                <xs:any processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+</xs:schema>
