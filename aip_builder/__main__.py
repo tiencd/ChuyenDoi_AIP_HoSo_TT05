@@ -10,6 +10,7 @@ Cung cap cac command:
 import click
 import logging
 import sys
+import os
 from pathlib import Path
 from datetime import datetime
 from typing import Optional
@@ -31,6 +32,112 @@ def setup_logging(log_level: str = "INFO"):
         level=getattr(logging, log_level.upper()),
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
+
+
+def prompt_for_path(prompt_text: str, default_path: str, must_exist: bool = True) -> str:
+    """Prompt người dùng nhập đường dẫn với validation"""
+    while True:
+        user_input = click.prompt(
+            f"{prompt_text} (mặc định: {default_path})",
+            default=default_path,
+            type=str
+        ).strip()
+        
+        if not user_input:
+            user_input = default_path
+            
+        path = Path(user_input)
+        if must_exist and not path.exists():
+            click.echo(f"❌ Đường dẫn không tồn tại: {user_input}")
+            click.echo("Vui lòng nhập lại đường dẫn hợp lệ.")
+            continue
+            
+        return str(path.resolve())
+
+
+def prompt_for_boolean(prompt_text: str, default_value: bool) -> bool:
+    """Prompt người dùng nhập giá trị boolean"""
+    default_str = "y" if default_value else "n"
+    while True:
+        user_input = click.prompt(
+            f"{prompt_text} (y/n, mặc định: {default_str})",
+            default=default_str,
+            type=str
+        ).strip().lower()
+        
+        if user_input in ['y', 'yes', 'true', '1']:
+            return True
+        elif user_input in ['n', 'no', 'false', '0']:
+            return False
+        else:
+            click.echo("❌ Vui lòng nhập 'y' hoặc 'n'")
+
+
+def interactive_parameter_input():
+    """Thu thập tham số từ người dùng một cách tương tác"""
+    click.echo("=" * 60)
+    click.echo("🚀 AIP Builder v2.0 - Interactive Mode")
+    click.echo("=" * 60)
+    click.echo("Vui lòng nhập các thông tin sau (Enter để sử dụng giá trị mặc định):")
+    click.echo()
+    
+    config = get_config()
+    
+    # Prompt for metadata file
+    click.echo("📊 File metadata Excel:")
+    meta_path = prompt_for_path(
+        "Đường dẫn file metadata.xlsx", 
+        config.default_meta_path,
+        must_exist=True
+    )
+    
+    # Prompt for PDF root directory
+    click.echo("\n📁 Thư mục PDF:")
+    pdf_root = prompt_for_path(
+        "Đường dẫn thư mục chứa PDF",
+        config.default_pdf_root,
+        must_exist=True
+    )
+    
+    # Prompt for output directory
+    click.echo("\n💾 Thư mục output:")
+    default_output = config.output_dir_with_timestamp
+    output_dir = prompt_for_path(
+        "Đường dẫn thư mục output",
+        default_output,
+        must_exist=False
+    )
+    
+    # Prompt for cleanup option
+    click.echo("\n🧹 Tùy chọn cleanup:")
+    cleanup_folders = not prompt_for_boolean(
+        "Giữ lại thư mục sau khi tạo ZIP?",
+        True  # default là giữ lại (không cleanup)
+    )
+    
+    # Prompt for validation
+    click.echo("\n✅ Tùy chọn validation:")
+    validate_after = prompt_for_boolean(
+        "Validate gói AIP sau khi tạo?",
+        True
+    )
+    
+    # Prompt for parallel processing
+    click.echo("\n⚡ Tùy chọn xử lý song song:")
+    max_workers = click.prompt(
+        f"Số worker song song (mặc định: {config.max_workers})",
+        default=config.max_workers,
+        type=int
+    )
+    
+    return {
+        'meta': meta_path,
+        'pdf_root': pdf_root,
+        'out': output_dir,
+        'cleanup_folders': cleanup_folders,
+        'validate_after': validate_after,
+        'max_workers': max_workers
+    }
 
 
 @click.group()
@@ -213,13 +320,39 @@ def test_xml(meta: str, output: str):
 
 
 @cli.command()
-@click.option('--meta', default='data/input/metadata.xlsx', help='Duong dan file metadata.xlsx')
-@click.option('--pdf-root', default='data/input/PDF_Files', help='Thu muc goc chua PDF')
+@click.option('--meta', default=None, help='Duong dan file metadata.xlsx')
+@click.option('--pdf-root', default=None, help='Thu muc goc chua PDF')
 @click.option('--output', default=None, help='Thu muc xuat AIP packages (mac dinh: data/output_[timestamp])')
 @click.option('--limit', type=int, help='Gioi han so luong ho so (cho test)')
-@click.option('--cleanup/--no-cleanup', default=False, help='Xoa folder AIP sau khi tao ZIP (mac dinh: giu folder)')
-def build(meta: str, pdf_root: str, output: str, limit: Optional[int], cleanup: bool):
+@click.option('--cleanup/--no-cleanup', default=None, help='Xoa folder AIP sau khi tao ZIP (mac dinh: giu folder)')
+@click.option('--interactive/--no-interactive', default=None, help='Che do nhap tham so tuong tac (mac dinh: auto-detect)')
+def build(meta: Optional[str], pdf_root: Optional[str], output: Optional[str], limit: Optional[int], cleanup: Optional[bool], interactive: Optional[bool]):
     """Xay dung cac goi AIP tu metadata Excel va PDF files"""
+    
+    config = get_config()
+    
+    # Xác định có cần interactive mode không
+    need_interactive = interactive is True or (
+        interactive is None and 
+        not any([meta, pdf_root, output]) and 
+        sys.stdin.isatty()  # Chỉ kích hoạt nếu đang chạy từ terminal
+    )
+    
+    # Nếu cần interactive mode
+    if need_interactive:
+        click.echo("🤖 Chế độ tương tác được kích hoạt vì không có tham số đầu vào")
+        params = interactive_parameter_input()
+        meta = params['meta']
+        pdf_root = params['pdf_root']
+        output = params['out']
+        cleanup = params['cleanup_folders']
+        # Có thể thêm các tham số khác từ interactive input
+    
+    # Sử dụng giá trị mặc định cho các tham số chưa được set
+    meta = meta or config.default_meta_path
+    pdf_root = pdf_root or config.default_pdf_root
+    cleanup = cleanup if cleanup is not None else False
+    
     click.echo("🏗️  AIP Builder - Xay dung goi AIP")
     
     try:
@@ -549,6 +682,41 @@ def generate_error_report(logs_dir, output):
         
     except Exception as e:
         click.secho(f"❌ Loi tao bao cao: {e}", fg='red')
+
+
+@cli.command()
+def interactive():
+    """Che do tuong tac - nhap tham so tu ban phim"""
+    try:
+        # Thu thập tham số tương tác
+        params = interactive_parameter_input()
+        
+        # Chạy build với các tham số đã thu thập
+        click.echo("\n🚀 Bắt đầu build với tham số đã nhập...")
+        
+        # Gọi trực tiếp từ context
+        ctx = click.get_current_context()
+        
+        # Tạo và gọi command build
+        build_command = build.callback
+        result = build_command(
+            meta=params['meta'],
+            pdf_root=params['pdf_root'], 
+            output=params['out'],
+            limit=None,
+            cleanup=params['cleanup_folders'],
+            interactive=False  # Tránh loop vô hạn
+        )
+        
+        return result or 0
+        
+    except KeyboardInterrupt:
+        click.echo("\n⚠️ Da huy qua trinh interactive")
+        return 1
+    except Exception as e:
+        click.echo(f"❌ Loi interactive mode: {e}")
+        logging.exception("Chi tiet loi:")
+        return 1
 
 
 def main():

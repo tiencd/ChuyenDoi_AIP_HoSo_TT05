@@ -184,6 +184,12 @@ class PackageBuilder:
             mets_path.write_text(updated_mets, encoding='utf-8')
             logger.info(f"Cap nhat METS.xml voi thong tin thuc te")
             
+            # Update placeholders in both main METS and rep1 METS
+            self._update_placeholders_in_mets(mets_path, dirs['root'])
+            rep1_mets_path = dirs['rep1'] / "METS.xml"
+            if rep1_mets_path.exists():
+                self._update_placeholders_in_mets(rep1_mets_path, dirs['root'])
+            
         except Exception as e:
             logger.error(f"Loi khi sinh metadata: {e}")
             raise
@@ -439,3 +445,55 @@ class PackageBuilder:
             if zip_path.exists():
                 zip_path.unlink()
             raise
+    
+    def _update_placeholders_in_mets(self, mets_path: Path, package_dir: Path):
+        """Update placeholders in METS files with actual file info"""
+        import re
+        
+        try:
+            mets_content = mets_path.read_text(encoding='utf-8')
+            
+            # Update PREMIS file info in main METS
+            premis_file = package_dir / "metadata" / "preservation" / "PREMIS.xml" 
+            if premis_file.exists():
+                premis_size = premis_file.stat().st_size
+                premis_checksum = self._calculate_checksum(premis_file)
+                
+                mets_content = mets_content.replace('PLACEHOLDER_PREMIS_SIZE', str(premis_size))
+                mets_content = mets_content.replace('PLACEHOLDER_PREMIS_CHECKSUM', premis_checksum)
+            
+            # Update PREMIS_rep1 file info in rep1 METS
+            premis_rep1_file = package_dir / "representations" / "rep1" / "metadata" / "preservation" / "PREMIS_rep1.xml"
+            if premis_rep1_file.exists():
+                rep1_size = premis_rep1_file.stat().st_size
+                rep1_checksum = self._calculate_checksum(premis_rep1_file)
+                
+                mets_content = mets_content.replace('PLACEHOLDER_PREMIS_REP_SIZE', str(rep1_size))
+                mets_content = mets_content.replace('PLACEHOLDER_PREMIS_REP_CHECKSUM', rep1_checksum)
+            
+            # Update EAD_doc file info 
+            ead_descriptive_dir = package_dir / "representations" / "rep1" / "metadata" / "descriptive"
+            if ead_descriptive_dir.exists():
+                for ead_file in ead_descriptive_dir.glob("EAD_doc_*.xml"):
+                    file_id = ead_file.stem.replace("EAD_doc_", "")
+                    ead_size = ead_file.stat().st_size
+                    ead_checksum = self._calculate_checksum(ead_file)
+                    
+                    mets_content = mets_content.replace(f'PLACEHOLDER_EAD_DOC_{file_id}_SIZE', str(ead_size))
+                    mets_content = mets_content.replace(f'PLACEHOLDER_EAD_DOC_{file_id}_CHECKSUM', ead_checksum)
+            
+            mets_path.write_text(mets_content, encoding='utf-8')
+            logger.debug(f"Updated placeholders in {mets_path}")
+            
+        except Exception as e:
+            logger.warning(f"Error updating placeholders in {mets_path}: {e}")
+    
+    def _calculate_checksum(self, file_path: Path) -> str:
+        """Calculate SHA-256 checksum for a file"""
+        import hashlib
+        try:
+            with open(file_path, 'rb') as f:
+                return hashlib.sha256(f.read()).hexdigest()
+        except Exception as e:
+            logger.warning(f"Could not calculate checksum for {file_path}: {e}")
+            return "0" * 64

@@ -166,6 +166,9 @@
     
     <premis:agentName>{{ config.organization_name or 'Unknown Organization' }}</premis:agentName>
     <premis:agentType>organization</premis:agentType>
+    {% if config.organization_email %}
+    <premis:agentNote>Contact: {{ config.organization_email }}</premis:agentNote>
+    {% endif %}
   </premis:agent>
 
   <!-- Ingestion Event -->

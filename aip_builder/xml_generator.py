@@ -80,11 +80,23 @@ class XMLTemplateGenerator:
                 return 'unknown.pdf'
             return Path(str(value)).name
         
+        def random_uuid():
+            """Tao UUID ngau nhien"""
+            from uuid import uuid4
+            return str(uuid4()).replace('-', '')
+        
+        def uuid4(value=None):
+            """Tao UUID4"""
+            from uuid import uuid4 as _uuid4
+            return str(_uuid4())
+        
         # Dang ky filter
         self.env.filters['format_date'] = format_date
         self.env.filters['escape_xml'] = escape_xml
         self.env.filters['safe_filename'] = safe_filename
         self.env.filters['basename'] = basename
+        self.env.filters['random_uuid'] = random_uuid
+        self.env.filters['uuid4'] = uuid4
     
     def generate_mets(self, hoso: HoSo, package_id: str) -> str:
         """

@@ -11,6 +11,12 @@ AIP Builder v2.0 là hệ thống hoàn chỉnh để chuyển đổi metadata E
 - **Ví dụ**: `urn_uuid_a1b2c3d4-e5f6-7890-abcd-ef1234567890`
 - **Cấu trúc**: Đặt trong đường dẫn hồ sơ gốc `Chi cuc.../hopso01/hoso01/urn_uuid_xxx/`
 
+### 🤖 **Interactive Mode**
+- **Auto-detect**: Tự động kích hoạt khi chạy không có tham số
+- **User-friendly**: Prompt nhập từng tham số với giá trị mặc định
+- **Validation**: Kiểm tra đường dẫn và tham số realtime
+- **Smart defaults**: Sử dụng config và timestamp tự động
+
 ### 🗂️ **Bảo toàn Đường dẫn Tương đối**
 - **Output structure**: Giữ nguyên cấu trúc từ input `PDF_Files/`
 - **Timestamp directory**: Tự động tạo `data/output_YYYYMMDD_HHMMSS/`
@@ -125,6 +131,41 @@ data/output_20250823_064121/   # Timestamp directory
 
 ## 🚀 Sử dụng
 
+### 🤖 Interactive Mode (Mới trong v2.0)
+
+**Cách 1: Gọi trực tiếp**
+```bash
+python -m aip_builder interactive
+```
+
+**Cách 2: Auto-detect (chạy build không tham số)**
+```bash
+python -m aip_builder build
+# → Tự động chuyển sang interactive mode nếu không có tham số
+```
+
+**Giao diện Interactive:**
+```
+🚀 AIP Builder v2.0 - Interactive Mode
+============================================================
+Vui lòng nhập các thông tin sau (Enter để sử dụng giá trị mặc định):
+
+📊 File metadata Excel:
+Đường dẫn file metadata.xlsx (mặc định: data/input/metadata.xlsx): 
+
+📁 Thư mục PDF:
+Đường dẫn thư mục chứa PDF (mặc định: data/input/PDF_Files): 
+
+💾 Thư mục output:
+Đường dẫn thư mục output (mặc định: data/output_20250823_065902): 
+
+🧹 Tùy chọn cleanup:
+Giữ lại thư mục sau khi tạo ZIP? (y/n, mặc định: y): 
+
+⚡ Tùy chọn xử lý song song:
+Số worker song song (mặc định: 4): 
+```
+
 ### 🎯 Lệnh Cơ bản
 
 #### 1. Build AIP Packages (v2.0)
@@ -161,9 +202,18 @@ python -m aip_builder validate-packages --packages-root data/output_20250823_064
 
 | Option | Mặc định | Mô tả |
 |--------|----------|-------|
+| `--interactive` | Auto-detect | Bắt buộc chế độ tương tác (prompt nhập tham số) |
+| `--no-interactive` | - | Tắt chế độ tương tác (sử dụng CLI thuần túy) |
 | `--cleanup` | `--no-cleanup` | Xóa folder AIP sau khi tạo ZIP (tiết kiệm dung lượng) |
 | `--output` | `data/output_[timestamp]` | Thư mục output tùy chỉnh |
 | `--limit` | `None` | Giới hạn số hồ sơ xử lý (cho test) |
+| `--meta` | `data/input/metadata.xlsx` | Đường dẫn file Excel metadata |
+| `--pdf-root` | `data/input/PDF_Files` | Thư mục gốc chứa PDF files |
+
+**💡 Auto-detect Interactive Mode:**
+- Tự động kích hoạt khi: `python -m aip_builder build` (không tham số)
+- Chỉ hoạt động từ terminal/console (không trong script)
+- Có thể force enable/disable bằng `--interactive/--no-interactive`
 
 ### 📊 Công cụ Phân tích
 

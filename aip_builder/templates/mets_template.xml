@@ -21,6 +21,9 @@
     </mets:agent>
     <mets:agent ROLE="ARCHIVIST" TYPE="ORGANIZATION">
       <mets:name>{{ config.organization_name | escape_xml }}</mets:name>
+      {% if config.organization_email %}
+      <mets:note>Contact: {{ config.organization_email }}</mets:note>
+      {% endif %}
     </mets:agent>
   </mets:metsHdr>
   
@@ -40,7 +43,7 @@
   
   <!-- Administrative Metadata -->
   <mets:amdSec ID="amd-{{ hoso.file_id }}">
-    <mets:techMD ID="tech-{{ hoso.file_id }}">
+    <mets:digiprovMD ID="digiprov-{{ hoso.file_id }}">
       <mets:mdRef ID="mdref-premis-{{ hoso.file_id }}"
                   LOCTYPE="URL" 
                   MDTYPE="PREMIS" 
@@ -51,7 +54,7 @@
                   CREATED="{{ created_time }}"
                   xlink:type="simple"
                   xlink:href="metadata/preservation/PREMIS.xml"/>
-    </mets:techMD>
+    </mets:digiprovMD>
   </mets:amdSec>
 
   <!-- File Section -->

@@ -20,6 +20,11 @@
       
       <publicationstmt>
         <publisher>{{ config.organization_name or 'Vietnam National Archives' }}</publisher>
+        {% if config.organization_email %}
+        <address>
+          <addressline>Email: {{ config.organization_email }}</addressline>
+        </address>
+        {% endif %}
         <date>{{ creation_date | format_date('%Y') }}</date>
       </publicationstmt>
       

@@ -15,6 +15,9 @@
         <mets:agent ROLE="CREATOR" TYPE="ORGANIZATION">
             <mets:name>{{ config.organization_name | escape_xml }}</mets:name>
             <mets:note>AIP Builder System - Representation Level METS</mets:note>
+            {% if config.organization_email %}
+            <mets:note>Contact: {{ config.organization_email }}</mets:note>
+            {% endif %}
         </mets:agent>
     </mets:metsHdr>
     
@@ -37,8 +40,9 @@
                     LOCTYPE="URL" 
                     MDTYPE="EAD" 
                     MIMETYPE="text/xml"
-                    {% if tai_lieu.kich_thuoc_file %}SIZE="{{ tai_lieu.kich_thuoc_file }}"{% endif %}
-                    {% if tai_lieu.checksum %}CHECKSUM="{{ tai_lieu.checksum }}" CHECKSUMTYPE="SHA-256"{% endif %}
+                    SIZE="PLACEHOLDER_EAD_DOC_{{ tai_lieu.file_id }}_SIZE"
+                    CHECKSUM="PLACEHOLDER_EAD_DOC_{{ tai_lieu.file_id }}_CHECKSUM"
+                    CHECKSUMTYPE="SHA-256"
                     CREATED="{{ created_time | format_date('%Y-%m-%dT%H:%M:%S+07:00') }}"
                     xlink:type="simple"
                     xlink:href="metadata/descriptive/EAD_doc_{{ tai_lieu.file_id }}.xml"/>
@@ -47,11 +51,18 @@
     
     <!-- Administrative Metadata -->
     <mets:amdSec ID="amd-rep-{{ hoso.file_id }}">
-        <mets:techMD ID="tech-rep-{{ hoso.file_id }}">
-            <mets:mdRef LOCTYPE="URL" MDTYPE="PREMIS" 
-                        HREF="../metadata/preservation/premis.xml"
-                        xlink:type="simple"/>
-        </mets:techMD>
+        <mets:digiprovMD ID="digiprov-rep-{{ hoso.file_id }}">
+            <mets:mdRef ID="mdref-premis-rep-{{ hoso.file_id }}"
+                        LOCTYPE="URL" 
+                        MDTYPE="PREMIS" 
+                        MIMETYPE="text/xml"
+                        SIZE="PLACEHOLDER_PREMIS_REP_SIZE"
+                        CHECKSUMTYPE="SHA-256"
+                        CHECKSUM="PLACEHOLDER_PREMIS_REP_CHECKSUM"
+                        CREATED="{{ created_time }}"
+                        xlink:type="simple"
+                        xlink:href="metadata/preservation/PREMIS_rep1.xml"/>
+        </mets:digiprovMD>
     </mets:amdSec>
     
     <!-- File Section -->
@@ -62,7 +73,9 @@
                        {% if tai_lieu.kich_thuoc_file %}SIZE="{{ tai_lieu.kich_thuoc_file }}"{% endif %}
                        {% if tai_lieu.checksum %}CHECKSUM="{{ tai_lieu.checksum }}" CHECKSUMTYPE="SHA-256"{% endif %}
                        CREATED="{{ created_time | format_date('%Y-%m-%dT%H:%M:%S+07:00') }}">
-                <mets:FLocat LOCTYPE="URL" xlink:href="data/{{ tai_lieu.ten_file_goc | safe_filename if tai_lieu.ten_file_goc else tai_lieu.duong_dan_file | safe_filename }}" xlink:type="simple"/>
+                <mets:FLocat LOCTYPE="URL" 
+                             xlink:href="data/{% if tai_lieu.filename %}{{ tai_lieu.filename }}{% else %}{{ tai_lieu.duongDanFile | basename }}{% endif %}" 
+                             xlink:type="simple"/>
             </mets:file>
             {% endfor %}
         </mets:fileGrp>
@@ -83,7 +96,7 @@
         <!-- MetadataLink Division -->
         <mets:div ID="div-metalink-{{ hoso.file_id }}" LABEL="MetadataLink">
             {% for tai_lieu in hoso.tai_lieu %}
-            <mets:div ID="uuid-{{ tai_lieu.file_id | upper }}" LABEL="MetadataLink/File" 
+            <mets:div ID="uuid-{{ loop.index | string | uuid4 | replace('-', '') | upper }}" LABEL="MetadataLink/File" 
                       DMDID="dmd-doc-{{ tai_lieu.file_id }}" ADMID="amd-rep-{{ hoso.file_id }}">
                 <mets:fptr FILEID="{{ tai_lieu.file_id }}"/>
             </mets:div>

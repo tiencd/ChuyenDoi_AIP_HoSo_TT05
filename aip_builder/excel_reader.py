@@ -271,43 +271,93 @@ class ExcelReader:
         return hoso_list
     
     def _prepare_hoso_data(self, row: pd.Series) -> Dict[str, Any]:
-        """Chuan bi du lieu cho HoSo model"""
+        """Chuan bi du lieu cho HoSo model - IMPROVED MAPPING"""
+        from datetime import datetime
+        
         data = {}
         
-        # Copy cac field co san
-        for field in ['ma_ho_so', 'title', 'phong', 'don_vi_hinh_thanh', 
-                     'ngon_ngu', 'tu_khoa', 'che_do_su_dung', 
-                     'thoi_han_bao_quan', 'ghi_chu']:
-            if field in row and not pd.isna(row[field]):
-                data[field] = row[field]
+        # Row already has renamed columns from _extract_hoso_data
+        # So we map directly from renamed columns to model fields
+        logger.debug(f"Row columns: {list(row.index)}")
+        logger.debug(f"Row data: {dict(row)}")
         
-        # Xu ly cac field so
-        for field in ['ngay_bd', 'thang_bd', 'nam_bd', 
-                     'ngay_kt', 'thang_kt', 'nam_kt', 'so_luong_to']:
-            if field in row and not pd.isna(row[field]):
-                try:
-                    data[field] = int(row[field])
-                except (ValueError, TypeError):
-                    logger.warning(f"Khong the chuyen doi {field}={row[field]} thanh int")
+        # Direct mapping from renamed columns (from _extract_hoso_data)
+        direct_mappings = {
+            'stt_ho_so': 'stt_ho_so',
+            'phong': 'phong', 
+            'muc_luc': 'muc_luc',
+            'hop_so': 'hop_so',
+            'so_ky_hieu_ho_so': 'so_ky_hieu_ho_so',
+            'title': 'title',  # This is already the main title from Excel
+            'thoi_han_bao_quan': 'thoi_han_bao_quan',
+            'che_do_su_dung': 'che_do_su_dung',
+            'ngon_ngu': 'ngon_ngu',
+            'ngay_bd': 'ngay_bd',
+            'thang_bd': 'thang_bd',
+            'nam_bd': 'nam_bd',
+            'ngay_kt': 'ngay_kt',
+            'thang_kt': 'thang_kt',
+            'nam_kt': 'nam_kt',
+            'tong_so_van_ban': 'tong_so_van_ban',
+            'chu_giai': 'chu_giai',
+            'ky_hieu_thong_tin': 'ky_hieu_thong_tin',
+            'tu_khoa': 'tu_khoa',
+            'so_luong_to': 'so_luong_to',
+            'tinh_trang_vat_ly': 'tinh_trang_vat_ly',
+            'muc_do_tin_cay': 'muc_do_tin_cay',
+            'ma_ho_so_giay_goc': 'ma_ho_so_giay_goc',
+            'ghi_chu': 'ghi_chu'
+        }
         
-        # Sinh arc_file_code tu ma_ho_so hoac title
-        if 'ma_ho_so' in data and data['ma_ho_so']:
-            data['arc_file_code'] = str(data['ma_ho_so'])
+        # Apply direct mappings
+        for col_name, model_field in direct_mappings.items():
+            logger.debug(f"Direct mapping {col_name} -> {model_field}: {col_name in row} ({col_name in row and not pd.isna(row[col_name])})")
+            if col_name in row and not pd.isna(row[col_name]):
+                value = row[col_name]
+                # Handle different data types
+                if model_field in ['ngay_bd', 'thang_bd', 'nam_bd', 'ngay_kt', 'thang_kt', 'nam_kt', 'so_luong_to', 'tong_so_van_ban']:
+                    try:
+                        data[model_field] = int(value) if value != '' else None
+                    except (ValueError, TypeError):
+                        logger.warning(f"Khong the chuyen doi {model_field}={value} thanh int")
+                        data[model_field] = None
+                else:
+                    data[model_field] = str(value).strip() if value else None
+        
+        # Legacy field compatibility - map to old field names used in templates
+        if 'title' in data:
+            # Keep both title and tieu_de_ho_so for compatibility
+            data['tieu_de_ho_so'] = data['title']
+        
+        # Sinh arc_file_code tu so_ky_hieu_ho_so hoac title
+        if 'so_ky_hieu_ho_so' in data and data['so_ky_hieu_ho_so']:
+            data['ma_ho_so'] = str(data['so_ky_hieu_ho_so'])  # For legacy compatibility
+            data['arc_file_code'] = self._normalize_filename(str(data['so_ky_hieu_ho_so']))
         elif 'title' in data:
             # Tao arc_file_code tu title (loai bo ky tu dac biet)
-            data['arc_file_code'] = re.sub(r'[^a-zA-Z0-9_.-]', '_', str(data['title']))[:50]
+            data['arc_file_code'] = self._normalize_filename(str(data['title']))
         else:
             data['arc_file_code'] = f"UNKNOWN_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         
         # Dam bao co title
         if 'title' not in data or not data['title']:
-            data['title'] = data['arc_file_code']
+            data['title'] = data.get('arc_file_code', 'Untitled')
         
+        logger.debug(f"Mapped HoSo data: title='{data.get('title', 'N/A')}', phong='{data.get('phong', 'N/A')}', ngon_ngu='{data.get('ngon_ngu', 'N/A')}'")
         return data
+
+    def _normalize_filename(self, filename: str) -> str:
+        """Normalize filename by removing special characters"""
+        import re
+        # Remove or replace special characters 
+        normalized = re.sub(r'[^\w\s-]', '_', filename)
+        # Replace spaces with underscores and limit length
+        normalized = re.sub(r'\s+', '_', normalized)
+        return normalized[:50] if len(normalized) > 50 else normalized
 
     def _prepare_hoso_data_from_folder(self, folder_path: str, tailieu_group: pd.DataFrame, hoso_df: pd.DataFrame) -> Dict[str, Any]:
         """
-        Tao du lieu HoSo tu folder path va nhom tai lieu
+        Tao du lieu HoSo tu folder path va nhom tai lieu - IMPROVED LOGIC
         """
         import os
         from datetime import datetime
@@ -317,20 +367,50 @@ class ExcelReader:
         # Extract folder name as ho so identifier
         folder_name = os.path.basename(folder_path.rstrip('/\\'))
         
-        # Try to match with existing HoSo data if possible
-        # Tim HoSo row tuong ung (neu co) dua tren folder pattern
+        # IMPROVED: Try multiple matching strategies
         matching_hoso_row = None
+        
+        # Strategy 1: Match by folder pattern (hoso01, hoso02, etc.)
         for _, hoso_row in hoso_df.iterrows():
-            # Simple matching logic - co the can tinh chinh
-            if folder_name in str(hoso_row.get('title', '')) or folder_name in str(hoso_row.get('ma_ho_so', '')):
-                matching_hoso_row = hoso_row
-                break
+            # Check if folder name matches pattern like "hoso01" -> row index + 1
+            if folder_name.startswith('hoso') and folder_name[4:].isdigit():
+                folder_num = int(folder_name[4:])  # Extract number from "hoso01" -> 1
+                # Match with row index (1-based)
+                logger.debug(f"Checking folder {folder_name}: folder_num={folder_num}, row.name={hoso_row.name}")
+                if folder_num == hoso_row.name:  # Use DataFrame index 
+                    matching_hoso_row = hoso_row
+                    logger.debug(f"MATCH FOUND: folder {folder_name} -> row {hoso_row.name}")
+                    break
+        
+        # Strategy 2: If no pattern match, try by co_quan matching
+        if matching_hoso_row is None:
+            path_parts = folder_path.replace('\\', '/').split('/')
+            if len(path_parts) >= 1:
+                co_quan_from_path = path_parts[0].strip('\\')  # First part of path
+                for _, hoso_row in hoso_df.iterrows():
+                    phong_value = str(hoso_row.get('phong', ''))
+                    # Normalize for comparison
+                    if co_quan_from_path.lower() in phong_value.lower():
+                        matching_hoso_row = hoso_row
+                        break
+        
+        # Strategy 3: Use first available row if still no match and limited data
+        if matching_hoso_row is None and len(hoso_df) > 0:
+            # Use the first row as fallback
+            matching_hoso_row = hoso_df.iloc[0]
+            logger.warning(f"No exact match for folder {folder_path}, using first HoSo row as fallback")
         
         if matching_hoso_row is not None:
             # Su dung du lieu tu HoSo row da match
-            return self._prepare_hoso_data(matching_hoso_row)
+            data = self._prepare_hoso_data(matching_hoso_row)
+            logger.info(f"Successfully matched folder '{folder_path}' with HoSo row {matching_hoso_row.name}")
+            # Override arc_file_code with folder name for consistency
+            data['arc_file_code'] = re.sub(r'[^a-zA-Z0-9_.-]', '_', folder_name)[:50]
+            data['original_folder_path'] = folder_path
+            return data
         
         # Neu khong match duoc, tao HoSo data tu folder path
+        logger.warning(f"Could not match folder '{folder_path}' with any HoSo data, creating from folder path")
         data['title'] = folder_name
         data['arc_file_code'] = re.sub(r'[^a-zA-Z0-9_.-]', '_', folder_name)[:50]
         

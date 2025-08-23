@@ -26,8 +26,9 @@ class Config:
     default_keep_folders: bool = True
     
     # Organization info
-    organization_name: str = "Cục Văn thư và Lưu trữ Nhà nước"
-    agency_code: str = "VN-CVTLT"
+    organization_name: str = "Công ty cổ phần công nghệ Lưu trữ - Số hóa HT"
+    organization_email: str = "tiencd89@gmail.com"
+    agency_code: str = "HTJSC"
     repository_code: str = "NARA"
     
     # Cau hinh XML

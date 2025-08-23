@@ -10,6 +10,11 @@
             </titlestmt>
             <publicationstmt>
                 <publisher>{{ config.organization_name | escape_xml }}</publisher>
+                {% if config.organization_email %}
+                <address>
+                    <addressline>Email: {{ config.organization_email }}</addressline>
+                </address>
+                {% endif %}
                 <date normal="{{ created_time | format_date('%Y-%m-%d') }}">{{ created_time | format_date('%Y-%m-%d') }}</date>
             </publicationstmt>
         </filedesc>

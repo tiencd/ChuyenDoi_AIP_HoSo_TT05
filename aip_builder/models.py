@@ -168,6 +168,7 @@ class HoSo(BaseModel):
     nam_bd: Optional[int] = None
     ngay_kt: Optional[int] = None
     thang_kt: Optional[int] = None
+    nam_kt: Optional[int] = None
     
     # Thong tin bo sung (legacy)
     tong_so_van_ban: Optional[int] = None
