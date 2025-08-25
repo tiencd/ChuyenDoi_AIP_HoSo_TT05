@@ -329,6 +329,53 @@ class ExcelReader:
             # Keep both title and tieu_de_ho_so for compatibility
             data['tieu_de_ho_so'] = data['title']
         
+        # NEW: Map to SimpleeDC compatible fields
+        # Map legacy fields to new SimpleeDC structure
+        if 'phong' in data and data['phong']:
+            data['ten_co_quan'] = data['phong']  # Map phong -> ten_co_quan
+        
+        if 'hop_so' in data and data['hop_so']:
+            data['ma_hop_so'] = data['hop_so']  # Map hop_so -> ma_hop_so
+            
+        if 'title' in data and data['title']:
+            data['tieu_de_ho_so'] = data['title']  # Keep title as tieu_de_ho_so
+        
+        if 'so_ky_hieu_ho_so' in data and data['so_ky_hieu_ho_so']:
+            data['ma_ho_so'] = data['so_ky_hieu_ho_so']  # Map so_ky_hieu_ho_so -> ma_ho_so
+        
+        # Format dates for SimpleeDC
+        if data.get('nam_bd') and data.get('thang_bd') and data.get('ngay_bd'):
+            data['ngay_bat_dau'] = f"{data['ngay_bd']:02d}/{data['thang_bd']:02d}/{data['nam_bd']}"
+        elif data.get('nam_bd') and data.get('thang_bd'):
+            data['ngay_bat_dau'] = f"{data['thang_bd']:02d}/{data['nam_bd']}"
+        elif data.get('nam_bd'):
+            data['ngay_bat_dau'] = str(data['nam_bd'])
+            
+        if data.get('nam_kt') and data.get('thang_kt') and data.get('ngay_kt'):
+            data['ngay_ket_thuc'] = f"{data['ngay_kt']:02d}/{data['thang_kt']:02d}/{data['nam_kt']}"
+        elif data.get('nam_kt') and data.get('thang_kt'):
+            data['ngay_ket_thuc'] = f"{data['thang_kt']:02d}/{data['nam_kt']}"
+        elif data.get('nam_kt'):
+            data['ngay_ket_thuc'] = str(data['nam_kt'])
+        
+        # Map so_luong_to -> so_to for SimpleeDC
+        if data.get('so_luong_to'):
+            data['so_to'] = str(data['so_luong_to'])
+        
+        # Map ghi_chu -> ghi_chu_ho_so for SimpleeDC
+        if data.get('ghi_chu'):
+            data['ghi_chu_ho_so'] = data['ghi_chu']
+        
+        # Set default values for required SimpleeDC fields
+        if 'ngon_ngu' not in data or not data['ngon_ngu']:
+            data['ngon_ngu'] = 'vie'  # Default Vietnamese
+        
+        if 'che_do_su_dung' not in data or not data['che_do_su_dung']:
+            data['che_do_su_dung'] = 'Sử dụng có điều kiện'  # Default restricted access
+        
+        if 'thoi_han_bao_quan' not in data or not data['thoi_han_bao_quan']:
+            data['thoi_han_bao_quan'] = 'Vĩnh viễn'  # Default permanent
+        
         # Sinh arc_file_code tu so_ky_hieu_ho_so hoac title
         if 'so_ky_hieu_ho_so' in data and data['so_ky_hieu_ho_so']:
             data['ma_ho_so'] = str(data['so_ky_hieu_ho_so'])  # For legacy compatibility
@@ -357,15 +404,37 @@ class ExcelReader:
 
     def _prepare_hoso_data_from_folder(self, folder_path: str, tailieu_group: pd.DataFrame, hoso_df: pd.DataFrame) -> Dict[str, Any]:
         """
-        Tao du lieu HoSo tu folder path va nhom tai lieu - IMPROVED LOGIC
+        Tao du lieu HoSo tu folder path va nhom tai lieu - IMPROVED LOGIC with arcFileCode from PDF filename
         """
         import os
+        import re
         from datetime import datetime
         
         data = {}
         
         # Extract folder name as ho so identifier
         folder_name = os.path.basename(folder_path.rstrip('/\\'))
+        
+        # CRITICAL: Extract arcFileCode from PDF filename pattern (as per audit requirement)
+        # Pattern: [arcFileCode].[STT].pdf
+        # Get arcFileCode from first PDF file in the folder
+        arc_file_code = None
+        filename_pattern = re.compile(r'^(.+)\.(\d+)\.pdf$', re.IGNORECASE)
+        
+        if not tailieu_group.empty and 'duongDanFile' in tailieu_group.columns:
+            first_file_path = str(tailieu_group.iloc[0]['duongDanFile'])
+            filename = os.path.basename(first_file_path)
+            
+            match = filename_pattern.match(filename)
+            if match:
+                arc_file_code = match.group(1).strip()
+                logger.info(f"Extracted arcFileCode from PDF filename: {filename} -> {arc_file_code}")
+            else:
+                logger.warning(f"Could not extract arcFileCode from filename: {filename}")
+                arc_file_code = self._normalize_filename(folder_name)[:50]  # Fallback
+        else:
+            # Fallback to folder name
+            arc_file_code = self._normalize_filename(folder_name)[:50]
         
         # IMPROVED: Try multiple matching strategies
         matching_hoso_row = None
@@ -404,15 +473,17 @@ class ExcelReader:
             # Su dung du lieu tu HoSo row da match
             data = self._prepare_hoso_data(matching_hoso_row)
             logger.info(f"Successfully matched folder '{folder_path}' with HoSo row {matching_hoso_row.name}")
-            # Override arc_file_code with folder name for consistency
-            data['arc_file_code'] = re.sub(r'[^a-zA-Z0-9_.-]', '_', folder_name)[:50]
+            
+            # IMPORTANT: Override arc_file_code with extracted value from PDF filename
+            data['arc_file_code'] = arc_file_code
             data['original_folder_path'] = folder_path
+            logger.info(f"Set arcFileCode from PDF pattern: {arc_file_code}")
             return data
         
         # Neu khong match duoc, tao HoSo data tu folder path
         logger.warning(f"Could not match folder '{folder_path}' with any HoSo data, creating from folder path")
         data['title'] = folder_name
-        data['arc_file_code'] = re.sub(r'[^a-zA-Z0-9_.-]', '_', folder_name)[:50]
+        data['arc_file_code'] = arc_file_code  # Use extracted arcFileCode
         
         # Extract thong tin tu folder path neu co pattern
         path_parts = folder_path.replace('\\', '/').split('/')
@@ -443,7 +514,7 @@ class ExcelReader:
         data['tong_so_van_ban'] = len(tailieu_group)
         data['so_luong_to'] = len(tailieu_group)
         
-        logger.info(f"Tao HoSo data tu folder: {folder_path} -> {data['title']}")
+        logger.info(f"Tao HoSo data tu folder: {folder_path} -> arcFileCode: {arc_file_code}, title: {data['title']}")
         return data
     
     def _convert_tailieu_models(self, tailieu_df: pd.DataFrame) -> List[TaiLieu]:
@@ -493,19 +564,32 @@ class ExcelReader:
             except (ValueError, TypeError):
                 logger.warning(f"Khong the chuyen doi ngay_van_ban={row['ngay_van_ban']} thanh int")
         
-        # Trich filename tu duongDanFile
+        # Trich filename tu duongDanFile va extract arcFileCode
         if 'duongDanFile' in data:
             file_path = Path(data['duongDanFile'])
-            data['filename'] = file_path.name
-            data['rel_href'] = f"representations/rep1/data/{file_path.name}"
+            filename = file_path.name
+            data['filename'] = filename
+            data['rel_href'] = f"representations/rep1/data/{filename}"
+            
+            # Extract arcFileCode from PDF filename pattern (same logic as HoSo)
+            import re
+            filename_pattern = re.compile(r'^(.+)\.(\d+)\.pdf$', re.IGNORECASE)
+            match = filename_pattern.match(filename)
+            if match:
+                arc_file_code = match.group(1).strip()
+                data['arc_file_code'] = arc_file_code
+                logger.debug(f"Extracted arcFileCode from TaiLieu filename: {filename} -> {arc_file_code}")
+            else:
+                logger.debug(f"No arcFileCode pattern found in filename: {filename}")
         else:
             # Fallback neu khong co duong dan
             if 'trich_yeu' in data:
                 safe_name = re.sub(r'[^a-zA-Z0-9_.-]', '_', str(data['trich_yeu']))[:50]
                 data['filename'] = f"{safe_name}.pdf"
                 data['rel_href'] = f"representations/rep1/data/{data['filename']}"
-            data['filename'] = f"document_{data.get('stt', 1):03d}.pdf"
-            data['rel_href'] = f"representations/rep1/data/{data['filename']}"
+            else:
+                data['filename'] = f"document_{data.get('stt', 1):03d}.pdf"
+                data['rel_href'] = f"representations/rep1/data/{data['filename']}"
         
         return data
 

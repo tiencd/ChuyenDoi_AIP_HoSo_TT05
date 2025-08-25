@@ -72,6 +72,9 @@ class TaiLieu(BaseModel):
     to_so: Optional[str] = None
     duongDanFile: Optional[str] = None  # Legacy field
     
+    # arcFileCode extracted from filename pattern
+    arc_file_code: Optional[str] = None
+    
     # System generated fields
     id: str = Field(default_factory=lambda: str(uuid4()))
     filename: Optional[str] = None
@@ -82,8 +85,8 @@ class TaiLieu(BaseModel):
     def generate_identifiers(self, stt: int):
         """Generate new design identifiers"""
         self.stt = stt
-        self.file_id = f"file-{stt}"
-        self.ead_doc_filename = f"EAD_doc_File{stt}.xml"  
+        self.file_id = str(uuid4())  # Use UUID for docId
+        self.ead_doc_filename = f"EAD_doc_File{stt}.xml"  # Keep sequential filename for file system
         self.dmd_id = f"dmd-doc-{stt}"
     
     @property
@@ -116,6 +119,170 @@ class TaiLieu(BaseModel):
                     date_str += f"-{self.ngay_van_ban:02d}"
             return date_str
         return ""
+    
+    # SimpleeDC properties for TaiLieu
+    @property
+    def arc_doc_code(self) -> str:
+        """Generate arcDocCode from arc_file_code and stt"""
+        if self.arc_file_code and self.stt:
+            return f"{self.arc_file_code}.{self.stt:07d}"
+        return f"{self.arc_file_code or ''}.{self.stt:07d}" if self.stt else ""
+    
+    @property
+    def thoi_han_bao_quan_code(self) -> str:
+        """Inherit from parent HoSo - default to '01' (Vĩnh viễn)"""
+        return '01'  # Will be set by parent HoSo context
+    
+    @property
+    def loai_tai_lieu_code(self) -> str:
+        """Convert loai_tai_lieu to code format"""
+        if not self.loai_tai_lieu and not self.ten_loai_van_ban:
+            return '32'  # Default: Khác
+            
+        loai = (self.loai_tai_lieu or self.ten_loai_van_ban or '').lower().strip()
+        mapping = {
+            'nghị quyết': '01', 'nghi quyet': '01',
+            'quyết định': '02', 'quyet dinh': '02',
+            'chỉ thị': '03', 'chi thi': '03',
+            'quy chế': '04', 'quy che': '04',
+            'quy định': '05', 'quy dinh': '05',
+            'thông cáo': '06', 'thong cao': '06',
+            'thông báo': '07', 'thong bao': '07',
+            'hướng dẫn': '08', 'huong dan': '08',
+            'chương trình': '09', 'chuong trinh': '09',
+            'kế hoạch': '10', 'ke hoach': '10',
+            'phương án': '11', 'phuong an': '11',
+            'đề án': '12', 'de an': '12',
+            'dự án': '13', 'du an': '13',
+            'báo cáo': '14', 'bao cao': '14',
+            'tờ trình': '15', 'to trinh': '15',
+            'giấy ủy quyền': '16', 'giay uy quyen': '16',
+            'phiếu gửi': '17', 'phieu gui': '17',
+            'phiếu chuyển': '18', 'phieu chuyen': '18',
+            'phiếu báo': '19', 'phieu bao': '19',
+            'biên bản': '20', 'bien ban': '20',
+            'hợp đồng': '21', 'hop dong': '21',
+            'công văn': '22', 'cong van': '22',
+            'công điện': '23', 'cong dien': '23',
+            'bản ghi nhớ': '24', 'ban ghi nho': '24',
+            'bản thỏa thuận': '25', 'ban thoa thuan': '25',
+            'giấy mời': '26', 'giay moi': '26',
+            'giấy giới thiệu': '27', 'giay gioi thieu': '27',
+            'giấy nghỉ phép': '28', 'giay nghi phep': '28',
+            'thư công': '29', 'thu cong': '29',
+            'bản đồ': '30', 'ban do': '30',
+            'bản vẽ kỹ thuật': '31', 'ban ve ky thuat': '31'
+        }
+        return mapping.get(loai, '32')  # Default: Khác
+    
+    @property
+    def ngay_van_ban_formatted(self) -> str:
+        """Format date from various sources"""
+        if self.ngay_thang_tai_lieu:
+            return self.ngay_thang_tai_lieu
+            
+        # Construct from separate fields
+        if self.nam_van_ban:
+            date_parts = []
+            if self.ngay_van_ban:
+                date_parts.append(f"{self.ngay_van_ban:02d}")
+            if self.thang_van_ban:
+                if not date_parts:
+                    date_parts.append("01")  # Default day if only month/year
+                date_parts.append(f"{self.thang_van_ban:02d}")
+            date_parts.append(str(self.nam_van_ban))
+            
+            if len(date_parts) == 3:
+                return "/".join(date_parts)  # DD/MM/YYYY
+            elif len(date_parts) == 2:
+                return "/".join(date_parts)  # MM/YYYY
+            else:
+                return str(self.nam_van_ban)  # YYYY
+        return ""
+    
+    @property
+    def ngon_ngu_code(self) -> str:
+        """Convert language to code format"""
+        ngon_ngu = (self.ngon_ngu_tai_lieu or self.ngon_ngu or '').lower().strip()
+        mapping = {
+            'việt': '01', 'viet': '01', 'vietnamese': '01', 'vie': '01', 'tiếng việt': '01', 'tieng viet': '01',
+            'anh': '02', 'english': '02', 'eng': '02', 'tiếng anh': '02', 'tieng anh': '02',
+            'pháp': '03', 'phap': '03', 'french': '03', 'fra': '03', 'tiếng pháp': '03', 'tieng phap': '03',
+            'nga': '04', 'russian': '04', 'rus': '04', 'tiếng nga': '04', 'tieng nga': '04',
+            'trung': '05', 'chinese': '05', 'chi': '05', 'tiếng trung': '05', 'tieng trung': '05',
+            'việt anh': '06', 'viet anh': '06',
+            'việt nga': '07', 'viet nga': '07',
+            'việt pháp': '08', 'viet phap': '08',
+            'hán nôm': '09', 'han nom': '09',
+            'việt trung': '10', 'viet trung': '10'
+        }
+        return mapping.get(ngon_ngu, '01')  # Default: Tiếng Việt
+    
+    @property
+    def che_do_su_dung_code(self) -> str:
+        """Convert access mode to code format"""
+        if not self.che_do_su_dung:
+            return '02'  # Default: Sử dụng có điều kiện
+            
+        che_do = self.che_do_su_dung.lower().strip()
+        mapping = {
+            'công khai': '01', 'cong khai': '01',
+            'sử dụng có điều kiện': '02', 'su dung co dieu kien': '02',
+            'hạn chế': '02', 'han che': '02',
+            'mật': '03', 'mat': '03'
+        }
+        return mapping.get(che_do, '02')
+    
+    @property
+    def muc_do_tin_cay_code(self) -> str:
+        """Convert confidence level to code format"""
+        if not self.muc_do_tin_cay:
+            return '02'  # Default: Số hóa
+            
+        tin_cay = self.muc_do_tin_cay.lower().strip()
+        mapping = {
+            'gốc điện tử': '01', 'goc dien tu': '01',
+            'số hóa': '02', 'so hoa': '02',
+            'hỗn hợp': '03', 'hon hop': '03'
+        }
+        return mapping.get(tin_cay, '02')
+    
+    @property
+    def tinh_trang_vat_ly_code(self) -> str:
+        """Convert physical condition to code format"""
+        if not self.tinh_trang_vat_ly:
+            return '02'  # Default: Bình thường
+            
+        tinh_trang = self.tinh_trang_vat_ly.lower().strip()
+        mapping = {
+            'tốt': '01', 'tot': '01',
+            'bình thường': '02', 'binh thuong': '02',
+            'hỏng': '03', 'hong': '03'
+        }
+        return mapping.get(tinh_trang, '02')
+    
+    @property
+    def quy_trinh_xu_ly_code(self) -> str:
+        """Convert process flag to code format"""
+        if not self.quy_trinh_xu_ly:
+            return '0'  # Default: Không có quy trình xử lý
+        
+        # If it's a boolean-like field
+        if str(self.quy_trinh_xu_ly).lower() in ['true', '1', 'có', 'co', 'yes']:
+            return '1'
+        return '0'
+    
+    @property
+    def che_do_du_phong(self) -> str:
+        """Risk recovery mode - default to '0' (Không)"""
+        return '0'
+    
+    @property 
+    def tinh_trang_du_phong(self) -> str:
+        """Risk recovery status - only set if che_do_du_phong is '1'"""
+        if self.che_do_du_phong == '1':
+            return '02'  # Default: Chưa dự phòng
+        return ''
 
 
 class HoSo(BaseModel):
@@ -304,6 +471,212 @@ class HoSo(BaseModel):
         # Generate identifiers for tai_lieu
         for i, tai_lieu in enumerate(self.tai_lieu, 1):
             tai_lieu.generate_identifiers(i)
+    
+    # SimpleeDC data conversion methods
+    @property
+    def thoi_han_bao_quan_code(self) -> str:
+        """Convert thoi_han_bao_quan to code format for SimpleeDC"""
+        if not self.thoi_han_bao_quan:
+            return '01'  # Default: Vĩnh viễn
+        
+        thoi_han = self.thoi_han_bao_quan.lower().strip()
+        mapping = {
+            'vĩnh viễn': '01',
+            'vinh vien': '01', 
+            '70 năm': '02',
+            '70 nam': '02',
+            '50 năm': '03', 
+            '50 nam': '03',
+            '30 năm': '04',
+            '30 nam': '04',
+            '20 năm': '05',
+            '20 nam': '05', 
+            '10 năm': '06',
+            '10 nam': '06'
+        }
+        return mapping.get(thoi_han, '07')  # Default: Khác
+    
+    @property
+    def che_do_su_dung_code(self) -> str:
+        """Convert che_do_su_dung to code format for SimpleeDC"""
+        if not self.che_do_su_dung:
+            return '02'  # Default: Sử dụng có điều kiện
+            
+        che_do = self.che_do_su_dung.lower().strip()
+        mapping = {
+            'công khai': '01',
+            'cong khai': '01',
+            'sử dụng có điều kiện': '02',
+            'su dung co dieu kien': '02',
+            'hạn chế': '02',
+            'han che': '02',
+            'mật': '03',
+            'mat': '03'
+        }
+        return mapping.get(che_do, '02')
+    
+    @property
+    def ngon_ngu_code(self) -> str:
+        """Convert ngon_ngu to code format for SimpleeDC"""
+        if not self.ngon_ngu:
+            return '01'  # Default: Tiếng Việt
+            
+        ngon_ngu = self.ngon_ngu.lower().strip()
+        mapping = {
+            'tiếng việt': '01',
+            'tieng viet': '01',
+            'việt': '01',
+            'viet': '01',
+            'vi': '01',
+            'vie': '01',
+            'vietnamese': '01',
+            'tiếng anh': '02',
+            'tieng anh': '02',
+            'anh': '02',
+            'english': '02',
+            'en': '02',
+            'tiếng pháp': '03',
+            'tieng phap': '03',
+            'pháp': '03',
+            'phap': '03',
+            'french': '03',
+            'fr': '03',
+            'tiếng nga': '04',
+            'tieng nga': '04',
+            'nga': '04',
+            'russian': '04',
+            'ru': '04',
+            'tiếng trung': '05',
+            'tieng trung': '05',
+            'trung': '05',
+            'chinese': '05',
+            'zh': '05',
+            'việt anh': '06',
+            'viet anh': '06',
+            'việt nga': '07',
+            'viet nga': '07',
+            'việt pháp': '08',
+            'viet phap': '08',
+            'hán nôm': '09',
+            'han nom': '09',
+            'việt trung': '10',
+            'viet trung': '10'
+        }
+        return mapping.get(ngon_ngu, '11')  # Default: Khác
+    
+    @property
+    def tinh_trang_vat_ly_code(self) -> str:
+        """Convert tinh_trang_vat_ly to code format for SimpleeDC"""
+        if not self.tinh_trang_vat_ly:
+            return '02'  # Default: Bình thường
+            
+        tinh_trang = self.tinh_trang_vat_ly.lower().strip()
+        mapping = {
+            'tốt': '01',
+            'tot': '01',
+            'good': '01',
+            'bình thường': '02',
+            'binh thuong': '02',
+            'normal': '02',
+            'hỏng': '03',
+            'hong': '03',
+            'damaged': '03',
+            'bad': '03'
+        }
+        return mapping.get(tinh_trang, '02')
+    
+    @property
+    def muc_do_tin_cay_code(self) -> str:
+        """Convert muc_do_tin_cay to code format for SimpleeDC"""
+        if not self.muc_do_tin_cay:
+            return '02'  # Default: Số hóa
+            
+        tin_cay = self.muc_do_tin_cay.lower().strip()
+        mapping = {
+            'gốc điện tử': '01',
+            'goc dien tu': '01',
+            'digital original': '01',
+            'số hóa': '02',
+            'so hoa': '02',
+            'digitized': '02',
+            'hỗn hợp': '03',
+            'hon hop': '03',
+            'mixed': '03'
+        }
+        return mapping.get(tin_cay, '02')
+    
+    @property
+    def start_date_formatted(self) -> str:
+        """Get start date in proper format for SimpleeDC"""
+        # Try new design fields first
+        if self.ngay_bat_dau:
+            return self.ngay_bat_dau
+            
+        # Fallback to legacy fields
+        if self.nam_bd:
+            date_str = str(self.nam_bd)
+            if self.thang_bd:
+                date_str += f"/{self.thang_bd:02d}"
+                if self.ngay_bd:
+                    date_str += f"/{self.ngay_bd:02d}"
+            return date_str
+        return ""
+    
+    @property
+    def end_date_formatted(self) -> str:
+        """Get end date in proper format for SimpleeDC"""
+        # Try new design fields first
+        if self.ngay_ket_thuc:
+            return self.ngay_ket_thuc
+            
+        # Fallback to legacy fields
+        if self.nam_kt:
+            date_str = str(self.nam_kt)
+            if self.thang_kt:
+                date_str += f"/{self.thang_kt:02d}"
+                if self.ngay_kt:
+                    date_str += f"/{self.ngay_kt:02d}"
+            return date_str
+        return ""
+    
+    @property
+    def total_pages(self) -> int:
+        """Calculate total pages from all tai_lieu"""
+        total = 0
+        for tai_lieu in self.tai_lieu:
+            if tai_lieu.so_trang:
+                total += tai_lieu.so_trang
+            elif tai_lieu.so_trang_tai_lieu:
+                total += tai_lieu.so_trang_tai_lieu
+        return total
+    
+    @property
+    def effective_total_pages(self) -> int:
+        """Get effective total pages - prefer from metadata, fallback to calculated"""
+        # In the future, if metadata.xlsx has a field for total pages of hoso,
+        # add it to HoSo model (e.g., so_luong_trang_ho_so) and check it here first
+        # For now, always calculate from tai_lieu
+        return self.total_pages
+    
+    @property
+    def effective_paper_file_code(self) -> str:
+        """Get effective paper file code - use arc_file_code as default"""
+        # Use ma_ho_so_giay_goc if available, otherwise use arc_file_code
+        if self.ma_ho_so_giay_goc:
+            return self.ma_ho_so_giay_goc
+        return self.arc_file_code or ""
+    
+    @property
+    def che_do_du_phong(self) -> str:
+        """Risk recovery mode - default to '0' (Không)"""
+        return '0'  # Default: Không có chế độ dự phòng
+    
+    @property 
+    def tinh_trang_du_phong(self) -> str:
+        """Risk recovery status - only set if che_do_du_phong is '1'"""
+        if self.che_do_du_phong == '1':
+            return '02'  # Default: Chưa dự phòng
+        return ''
 
 
 class PackagePlan(BaseModel):

@@ -150,10 +150,10 @@ class PackageBuilder:
             
             # Ghi cac file EAD_doc_FileX.xml rieng cho tung tai lieu
             if 'ead_docs' in xmls and xmls['ead_docs']:
-                for file_id, ead_content in xmls['ead_docs'].items():
-                    ead_doc_path = dirs['rep1_descriptive'] / f'EAD_doc_{file_id}.xml'
+                for filename, ead_content in xmls['ead_docs'].items():
+                    ead_doc_path = dirs['rep1_descriptive'] / filename
                     ead_doc_path.write_text(ead_content, encoding='utf-8')
-                    logger.info(f"Tao EAD_doc_{file_id}.xml: {ead_doc_path}")
+                    logger.info(f"Tao {filename}: {ead_doc_path}")
             
             # Ghi file EAD tong hop (neu can)
             ead_path = dirs['descriptive'] / 'EAD.xml'  # Sửa tên file cho đúng

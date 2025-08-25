@@ -120,11 +120,11 @@ class XMLTemplateGenerator:
     
     def generate_ead(self, hoso: HoSo, package_id: str) -> str:
         """
-        Sinh EAD XML cho ho so - mo ta archive
+        Sinh SimpleeDC XML cho ho so - mo ta archive theo cau truc moi
         """
-        logger.info(f"Sinh EAD cho ho so: {hoso.arc_file_code}")
+        logger.info(f"Sinh SimpleeDC cho ho so: {hoso.arc_file_code}")
         
-        template = self.env.get_template('ead_template.xml')
+        template = self.env.get_template('simpledc_hoso_template.xml')
         
         context = {
             'package_id': package_id,
@@ -171,7 +171,7 @@ class XMLTemplateGenerator:
     
     def generate_ead_document(self, tai_lieu: TaiLieu, hoso: HoSo, package_id: str) -> str:
         """
-        Sinh file EAD cho 1 tai lieu cu the theo thiet ke moi
+        Sinh file EAD SimpleeDC cho 1 tai lieu cu the theo thiet ke moi
         
         Args:
             tai_lieu: Doi tuong TaiLieu can sinh EAD
@@ -179,25 +179,27 @@ class XMLTemplateGenerator:
             package_id: ID cua package
             
         Returns:
-            Noi dung XML EAD cho tai lieu
+            Noi dung XML SimpleeDC cho tai lieu
         """
-        logger.debug(f"Sinh EAD cho tai lieu: {tai_lieu.effective_title}")
+        logger.debug(f"Sinh SimpleeDC EAD cho tai lieu: {tai_lieu.effective_title}")
         
         try:
-            template = self.env.get_template('ead_document.xml')
+            template = self.env.get_template('simpledc_tailieu_template.xml')
             
             context = {
                 'tai_lieu': tai_lieu,
                 'hoso': hoso, 
                 'package_id': package_id,
                 'created_time': datetime.now(),
-                'config': self.config
+                'config': self.config,
+                # Pass parent HoSo's properties for TaiLieu to use
+                'parent_thoi_han_bao_quan_code': hoso.thoi_han_bao_quan_code
             }
             
             return template.render(context)
             
         except Exception as e:
-            logger.error(f"Loi sinh EAD cho tai lieu {tai_lieu.effective_title}: {e}")
+            logger.error(f"Loi sinh SimpleeDC EAD cho tai lieu {tai_lieu.effective_title}: {e}")
             raise
 
     def generate_rep_mets(self, hoso: HoSo, package_id: str) -> str:
@@ -255,10 +257,10 @@ class XMLTemplateGenerator:
             
             # Sinh EAD rieng cho tung tai lieu
             for tai_lieu in hoso.tai_lieu:
-                if hasattr(tai_lieu, 'file_id') and tai_lieu.file_id:
-                    file_id = tai_lieu.file_id
-                    results['ead_docs'][file_id] = self.generate_ead_document(tai_lieu, hoso, package_id)
-                    logger.debug(f"Sinh EAD_doc_{file_id}.xml cho tai lieu: {tai_lieu.effective_title}")
+                if hasattr(tai_lieu, 'ead_doc_filename') and tai_lieu.ead_doc_filename:
+                    filename = tai_lieu.ead_doc_filename
+                    results['ead_docs'][filename] = self.generate_ead_document(tai_lieu, hoso, package_id)
+                    logger.debug(f"Sinh {filename} cho tai lieu: {tai_lieu.effective_title}")
             
             logger.info(f"Sinh thanh cong {len(results)} XML types cho {hoso.arc_file_code}")
             logger.info(f"Sinh {len(results['ead_docs'])} EAD documents rieng")

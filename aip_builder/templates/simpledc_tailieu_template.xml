@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simpledc>
+    <docId>{{ tai_lieu.file_id | escape_xml }}</docId>
+    <arcDocCode>{{ tai_lieu.arc_doc_code | escape_xml }}</arcDocCode>
+    <maintenance>{{ parent_thoi_han_bao_quan_code or tai_lieu.thoi_han_bao_quan_code or '01' }}</maintenance>
+    <typeName>{{ tai_lieu.loai_tai_lieu_code or '32' }}</typeName>
+    <codeNumber>{{ tai_lieu.so_van_ban | escape_xml if tai_lieu.so_van_ban else '' }}</codeNumber>
+    <codeNotation>{{ tai_lieu.ky_hieu_van_ban | escape_xml if tai_lieu.ky_hieu_van_ban else '' }}</codeNotation>
+    <issuedDate>{{ tai_lieu.ngay_van_ban_formatted }}</issuedDate>
+    <organName>{{ tai_lieu.co_quan_ban_hanh | escape_xml if tai_lieu.co_quan_ban_hanh else '' }}</organName>
+    <subject>{{ tai_lieu.trich_yeu | escape_xml if tai_lieu.trich_yeu else '' }}</subject>
+    <language>{{ tai_lieu.ngon_ngu_code or '01' }}</language>
+    <numberOfPage>{{ tai_lieu.so_trang_tai_lieu or tai_lieu.so_trang or 0 }}</numberOfPage>
+    <inforSign>{{ tai_lieu.ky_hieu_thong_tin | escape_xml if tai_lieu.ky_hieu_thong_tin else '' }}</inforSign>
+    <keyword>{{ tai_lieu.tu_khoa | escape_xml if tai_lieu.tu_khoa else '' }}</keyword>
+    <mode>{{ tai_lieu.che_do_su_dung_code or '02' }}</mode>
+    <confidenceLevel>{{ tai_lieu.muc_do_tin_cay_code or '02' }}</confidenceLevel>
+    <autograph>{{ tai_lieu.but_tich | escape_xml if tai_lieu.but_tich else '' }}</autograph>
+    <format>{{ tai_lieu.tinh_trang_vat_ly_code or '02' }}</format>
+    <process>{{ tai_lieu.quy_trinh_xu_ly_code or '0' }}</process>
+    <riskRecovery>{{ tai_lieu.che_do_du_phong or '0' }}</riskRecovery>
+    <riskRecoveryStatus>{{ tai_lieu.tinh_trang_du_phong or '02' if tai_lieu.che_do_du_phong == '1' else '' }}</riskRecoveryStatus>
+    <description>{{ tai_lieu.ghi_chu_tai_lieu | escape_xml if tai_lieu.ghi_chu_tai_lieu else tai_lieu.ghi_chu | escape_xml if tai_lieu.ghi_chu else '' }}</description>
+</simpledc>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simpledc>
+    <arcFileCode>{{ hoso.arc_file_code | escape_xml }}</arcFileCode>
+    <title>{{ hoso.effective_title | escape_xml }}</title>
+    <maintenance>{{ hoso.thoi_han_bao_quan_code or '01' }}</maintenance>
+    <mode>{{ hoso.che_do_su_dung_code or '02' }}</mode>
+    <language>{{ hoso.ngon_ngu_code or '01' }}</language>
+    <startDate>{{ hoso.start_date_formatted }}</startDate>
+    <endDate>{{ hoso.end_date_formatted }}</endDate>
+    <keyword>{{ hoso.tu_khoa | escape_xml if hoso.tu_khoa else '' }}</keyword>
+    <totalDoc>{{ hoso.tong_so_van_ban or hoso.tai_lieu|length if hoso.tai_lieu else 0 }}</totalDoc>
+    <numberOfPaper>{{ hoso.so_luong_to or 0 }}</numberOfPaper>
+    <numberOfPage>{{ hoso.effective_total_pages or 0 }}</numberOfPage>
+    <format>{{ hoso.tinh_trang_vat_ly_code or '02' }}</format>
+    <inforSign>{{ hoso.ky_hieu_thong_tin | escape_xml if hoso.ky_hieu_thong_tin else '' }}</inforSign>
+    <confidenceLevel>{{ hoso.muc_do_tin_cay_code or '02' }}</confidenceLevel>
+    <paperFileCode>{{ hoso.effective_paper_file_code | escape_xml }}</paperFileCode>
+    <riskRecovery>{{ hoso.che_do_du_phong or '0' }}</riskRecovery>
+    <riskRecoveryStatus>{{ hoso.tinh_trang_du_phong or '02' if hoso.che_do_du_phong == '1' else '' }}</riskRecoveryStatus>
+    <description>{{ hoso.ghi_chu | escape_xml if hoso.ghi_chu else '' }}</description>
+</simpledc>
