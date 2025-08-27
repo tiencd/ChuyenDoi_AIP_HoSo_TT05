@@ -320,9 +320,18 @@ def test_xml(meta: str, output: str):
         
         # Ghi ra file
         for xml_type, xml_content in xmls.items():
-            xml_file = output_dir / f"{xml_type}.xml"
-            xml_file.write_text(xml_content, encoding='utf-8')
-            click.echo(f"✓ Tao {xml_type}.xml ({len(xml_content)} characters)")
+            if xml_type == 'ead_docs':
+                # Special handling for EAD documents dictionary
+                if isinstance(xml_content, dict):
+                    for doc_filename, doc_content in xml_content.items():
+                        xml_file = output_dir / doc_filename
+                        xml_file.write_text(doc_content, encoding='utf-8')
+                        click.echo(f"✓ Tao {doc_filename} ({len(doc_content)} characters)")
+            else:
+                # Normal handling for single XML files
+                xml_file = output_dir / f"{xml_type}.xml"
+                xml_file.write_text(xml_content, encoding='utf-8')
+                click.echo(f"✓ Tao {xml_type}.xml ({len(xml_content)} characters)")
         
         click.echo(f"✓ Hoan tat! Kiem tra trong thu muc: {output_dir.absolute()}")
         

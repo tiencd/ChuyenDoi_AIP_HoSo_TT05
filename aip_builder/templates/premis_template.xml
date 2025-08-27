@@ -11,6 +11,16 @@
       <premis:objectIdentifierValue>{{ package_id }}</premis:objectIdentifierValue>
     </premis:objectIdentifier>
     
+    <premis:objectCategory>intellectual entity</premis:objectCategory>
+    
+    <premis:preservationLevel>
+      <premis:preservationLevelType>full preservation</premis:preservationLevelType>
+      <premis:preservationLevelValue>High</premis:preservationLevelValue>
+      <premis:preservationLevelRole>intention</premis:preservationLevelRole>
+      <premis:preservationLevelRationale>institutional policy</premis:preservationLevelRationale>
+      <premis:preservationLevelDateAssigned>{{ created_time | format_date('%Y-%m-%d') }}</premis:preservationLevelDateAssigned>
+    </premis:preservationLevel>
+    
     <premis:objectCharacteristics>
       <premis:objectCharacteristicsExtension>
         <title>{{ hoso.effective_title | escape_xml }}</title>
@@ -37,10 +47,15 @@
       <premis:relationshipSubType>is part of</premis:relationshipSubType>
       <premis:relatedObjectIdentification>
         <premis:relatedObjectIdentifierType>FONDS</premis:relatedObjectIdentifierType>
-        <premis:relatedObjectIdentifierValue>{{ hoso.phong | escape_xml if hoso.phong else hoso.muc_luc | escape_xml }}</premis:relatedObjectIdentifierValue>
+        <premis:relatedObjectIdentifierValue>{{ (hoso.phong if hoso.phong else hoso.muc_luc) | escape_xml }}</premis:relatedObjectIdentifierValue>
       </premis:relatedObjectIdentification>
     </premis:relationship>
     {% endif %}
+    
+    <premis:linkingEventIdentifier>
+      <premis:linkingEventIdentifierType>UUID</premis:linkingEventIdentifierType>
+      <premis:linkingEventIdentifierValue>event-creation-{{ hoso.id }}</premis:linkingEventIdentifierValue>
+    </premis:linkingEventIdentifier>
   </premis:object>
 
   <!-- Representation Object -->
@@ -50,12 +65,27 @@
       <premis:objectIdentifierValue>{{ package_id }}_rep1</premis:objectIdentifierValue>
     </premis:objectIdentifier>
     
+    <premis:objectCategory>representation</premis:objectCategory>
+    
+    <premis:preservationLevel>
+      <premis:preservationLevelType>logical preservation</premis:preservationLevelType>
+      <premis:preservationLevelValue>High</premis:preservationLevelValue>
+      <premis:preservationLevelRole>intention</premis:preservationLevelRole>
+      <premis:preservationLevelRationale>institutional policy</premis:preservationLevelRationale>
+      <premis:preservationLevelDateAssigned>{{ created_time | format_date('%Y-%m-%d') }}</premis:preservationLevelDateAssigned>
+    </premis:preservationLevel>
+    
     <premis:objectCharacteristics>
       <premis:objectCharacteristicsExtension>
         <representationType>Original</representationType>
         <digitalFormatName>PDF</digitalFormatName>
       </premis:objectCharacteristicsExtension>
     </premis:objectCharacteristics>
+    
+    <premis:linkingEventIdentifier>
+      <premis:linkingEventIdentifierType>UUID</premis:linkingEventIdentifierType>
+      <premis:linkingEventIdentifierValue>event-creation-{{ hoso.id }}</premis:linkingEventIdentifierValue>
+    </premis:linkingEventIdentifier>
     
     <premis:relationship>
       <premis:relationshipType>structural</premis:relationshipType>
@@ -75,6 +105,16 @@
       <premis:objectIdentifierType>LOCAL</premis:objectIdentifierType>
       <premis:objectIdentifierValue>{{ package_id }}_file_{{ loop.index }}</premis:objectIdentifierValue>
     </premis:objectIdentifier>
+    
+    <premis:objectCategory>file</premis:objectCategory>
+    
+    <premis:preservationLevel>
+      <premis:preservationLevelType>bit preservation</premis:preservationLevelType>
+      <premis:preservationLevelValue>Full</premis:preservationLevelValue>
+      <premis:preservationLevelRole>requirement</premis:preservationLevelRole>
+      <premis:preservationLevelRationale>legal mandate</premis:preservationLevelRationale>
+      <premis:preservationLevelDateAssigned>{{ created_time | format_date('%Y-%m-%d') }}</premis:preservationLevelDateAssigned>
+    </premis:preservationLevel>
     
     <premis:objectCharacteristics>
       <premis:compositionLevel>0</premis:compositionLevel>
@@ -115,6 +155,13 @@
       </premis:objectCharacteristicsExtension>
     </premis:objectCharacteristics>
     
+    <premis:originalName>{{ tailieu.duongDanFile | basename | escape_xml }}</premis:originalName>
+    
+    <premis:linkingEventIdentifier>
+      <premis:linkingEventIdentifierType>UUID</premis:linkingEventIdentifierType>
+      <premis:linkingEventIdentifierValue>event-digitization-{{ package_id }}_file_{{ loop.index }}</premis:linkingEventIdentifierValue>
+    </premis:linkingEventIdentifier>
+    
     <premis:storage>
       <premis:contentLocation>
         <premis:contentLocationType>URI</premis:contentLocationType>
@@ -141,6 +188,82 @@
   {% endif %}
   {% endfor %}
 
+  <!-- EVENTS -->
+  
+  <!-- Event: AIP Creation -->
+  <premis:event>
+    <premis:eventIdentifier>
+      <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+      <premis:eventIdentifierValue>event-creation-{{ hoso.id }}</premis:eventIdentifierValue>
+    </premis:eventIdentifier>
+    
+    <premis:eventType>creation</premis:eventType>
+    <premis:eventDateTime>{{ created_time | format_date('%Y-%m-%dT%H:%M:%S') }}</premis:eventDateTime>
+    
+    <premis:eventDetailInformation>
+      <premis:eventDetail>AIP package creation for archival record {{ hoso.ma_muc_luc }}</premis:eventDetail>
+    </premis:eventDetailInformation>
+    
+    <premis:eventOutcomeInformation>
+      <premis:eventOutcome>success</premis:eventOutcome>
+      <premis:eventOutcomeDetail>
+        <premis:eventOutcomeDetailNote>AIP successfully created with {{ hoso.tai_lieu|length }} files</premis:eventOutcomeDetailNote>
+      </premis:eventOutcomeDetail>
+    </premis:eventOutcomeInformation>
+    
+    <premis:linkingAgentIdentifier>
+      <premis:linkingAgentIdentifierType>LOCAL</premis:linkingAgentIdentifierType>
+      <premis:linkingAgentIdentifierValue>{{ agent_name | safe_filename }}_{{ agent_version }}</premis:linkingAgentIdentifierValue>
+      <premis:linkingAgentRole>executor</premis:linkingAgentRole>
+    </premis:linkingAgentIdentifier>
+    
+    <premis:linkingObjectIdentifier>
+      <premis:linkingObjectIdentifierType>LOCAL</premis:linkingObjectIdentifierType>
+      <premis:linkingObjectIdentifierValue>{{ package_id }}</premis:linkingObjectIdentifierValue>
+      <premis:linkingObjectRole>outcome</premis:linkingObjectRole>
+    </premis:linkingObjectIdentifier>
+  </premis:event>
+
+  {% for tailieu in hoso.tai_lieu %}
+  {% if tailieu.duongDanFile %}
+  <!-- Event: File Digitization {{ loop.index }} -->
+  <premis:event>
+    <premis:eventIdentifier>
+      <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
+      <premis:eventIdentifierValue>event-digitization-{{ package_id }}_file_{{ loop.index }}</premis:eventIdentifierValue>
+    </premis:eventIdentifier>
+    
+    <premis:eventType>digitization</premis:eventType>
+    <premis:eventDateTime>{{ created_time | format_date('%Y-%m-%dT%H:%M:%S') }}</premis:eventDateTime>
+    
+    <premis:eventDetailInformation>
+      <premis:eventDetail>Digital conversion of physical document {{ tailieu.duongDanFile | basename }}</premis:eventDetail>
+    </premis:eventDetailInformation>
+    
+    <premis:eventOutcomeInformation>
+      <premis:eventOutcome>success</premis:eventOutcome>
+      <premis:eventOutcomeDetail>
+        <premis:eventOutcomeDetailNote>Document successfully digitized to PDF format</premis:eventOutcomeDetailNote>
+      </premis:eventOutcomeDetail>
+    </premis:eventOutcomeInformation>
+    
+    <premis:linkingAgentIdentifier>
+      <premis:linkingAgentIdentifierType>LOCAL</premis:linkingAgentIdentifierType>
+      <premis:linkingAgentIdentifierValue>{{ config.organization_name | safe_filename if config.organization_name else 'UNKNOWN_ORG' }}</premis:linkingAgentIdentifierValue>
+      <premis:linkingAgentRole>implementer</premis:linkingAgentRole>
+    </premis:linkingAgentIdentifier>
+    
+    <premis:linkingObjectIdentifier>
+      <premis:linkingObjectIdentifierType>LOCAL</premis:linkingObjectIdentifierType>
+      <premis:linkingObjectIdentifierValue>{{ package_id }}_file_{{ loop.index }}</premis:linkingObjectIdentifierValue>
+      <premis:linkingObjectRole>outcome</premis:linkingObjectRole>
+    </premis:linkingObjectIdentifier>
+  </premis:event>
+  {% endif %}
+  {% endfor %}
+
+  <!-- AGENTS -->
+  
   <!-- Agent - AIP Builder Software -->
   <premis:agent>
     <premis:agentIdentifier>
@@ -151,9 +274,12 @@
     <premis:agentName>{{ agent_name }} {{ agent_version }}</premis:agentName>
     <premis:agentType>software</premis:agentType>
     
+    <premis:agentNote>Automated AIP creation and PREMIS metadata generation tool</premis:agentNote>
+    
     <premis:agentExtension>
       <softwareVersion>{{ agent_version }}</softwareVersion>
       <operatingSystem>Windows/Linux/macOS</operatingSystem>
+      <functionType>preservation packaging</functionType>
     </premis:agentExtension>
   </premis:agent>
 
@@ -166,43 +292,19 @@
     
     <premis:agentName>{{ config.organization_name or 'Unknown Organization' }}</premis:agentName>
     <premis:agentType>organization</premis:agentType>
+    
+    <premis:agentNote>Digital preservation repository responsible for long-term access and preservation</premis:agentNote>
+    
     {% if config.organization_email %}
-    <premis:agentNote>Contact: {{ config.organization_email }}</premis:agentNote>
+    <premis:agentExtension>
+      <contactEmail>{{ config.organization_email }}</contactEmail>
+      <preservationRole>repository</preservationRole>
+    </premis:agentExtension>
+    {% else %}
+    <premis:agentExtension>
+      <preservationRole>repository</preservationRole>
+    </premis:agentExtension>
     {% endif %}
   </premis:agent>
-
-  <!-- Ingestion Event -->
-  <premis:event>
-    <premis:eventIdentifier>
-      <premis:eventIdentifierType>LOCAL</premis:eventIdentifierType>
-      <premis:eventIdentifierValue>{{ package_id }}_ingestion_{{ creation_date | format_date('%Y%m%d_%H%M%S') }}</premis:eventIdentifierValue>
-    </premis:eventIdentifier>
-    
-    <premis:eventType>ingestion</premis:eventType>
-    <premis:eventDateTime>{{ creation_date | format_date }}</premis:eventDateTime>
-    
-    <premis:eventDetailInformation>
-      <premis:eventDetail>AIP package created from Excel metadata and PDF files</premis:eventDetail>
-    </premis:eventDetailInformation>
-    
-    <premis:eventOutcomeInformation>
-      <premis:eventOutcome>success</premis:eventOutcome>
-      <premis:eventOutcomeDetail>
-        <premis:eventOutcomeDetailNote>{{ hoso.tai_lieu | length }} files successfully ingested</premis:eventOutcomeDetailNote>
-      </premis:eventOutcomeDetail>
-    </premis:eventOutcomeInformation>
-    
-    <premis:linkingAgentIdentifier>
-      <premis:linkingAgentIdentifierType>LOCAL</premis:linkingAgentIdentifierType>
-      <premis:linkingAgentIdentifierValue>{{ agent_name | safe_filename }}_{{ agent_version }}</premis:linkingAgentIdentifierValue>
-      <premis:linkingAgentRole>implementer</premis:linkingAgentRole>
-    </premis:linkingAgentIdentifier>
-    
-    <premis:linkingObjectIdentifier>
-      <premis:linkingObjectIdentifierType>LOCAL</premis:linkingObjectIdentifierType>
-      <premis:linkingObjectIdentifierValue>{{ package_id }}</premis:linkingObjectIdentifierValue>
-      <premis:linkingObjectRole>outcome</premis:linkingObjectRole>
-    </premis:linkingObjectIdentifier>
-  </premis:event>
 
 </premis:premis>

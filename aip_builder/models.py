@@ -7,9 +7,70 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import List, Optional, Any, Dict
 from uuid import uuid4, UUID
+import hashlib
+import base64
 
 from pydantic import BaseModel, Field, field_validator
 from pydantic import ConfigDict
+
+
+def generate_short_doc_id(base_string: Optional[str] = None, max_length: int = 25) -> str:
+    """
+    Tạo docId ngắn dưới 25 ký tự nhưng vẫn đảm bảo tính duy nhất
+    
+    Chiến lược:
+    1. Nếu có base_string (như arc_file_code), sử dụng làm prefix
+    2. Thêm timestamp ngắn (6 ký tự) 
+    3. Thêm hash ngắn (6-8 ký tự) từ UUID
+    4. Tổng cộng <= 25 ký tự
+    
+    Format: [PREFIX]_[TIMESTAMP][HASH]
+    VD: DOC_240827_A1B2C3 (18 ký tự)
+        001030_240827_XY9Z (17 ký tự)  
+    """
+    import time
+    
+    # Tạo timestamp ngắn (YYMMDD format - 6 ký tự)
+    timestamp = datetime.now().strftime("%y%m%d")
+    
+    # Tạo hash ngắn từ UUID để đảm bảo uniqueness
+    uuid_str = str(uuid4())
+    hash_obj = hashlib.md5(uuid_str.encode())
+    # Lấy 4 bytes đầu, encode base64, bỏ padding, chỉ lấy ký tự alphanumeric
+    short_hash = base64.b64encode(hash_obj.digest()[:4]).decode().replace('=', '').replace('+', '').replace('/', '')[:6]
+    
+    if base_string:
+        # Sử dụng prefix từ base_string
+        # Làm sạch và rút ngắn prefix
+        clean_prefix = re.sub(r'[^\w]', '', base_string)[:10]  # Max 10 chars cho prefix
+        available_length = max_length - len(clean_prefix) - 1 - len(timestamp) - 1  # -1 cho dấu gạch ngang
+        if available_length < 4:
+            # Nếu prefix quá dài, rút ngắn
+            clean_prefix = clean_prefix[:6]
+            available_length = max_length - 6 - 1 - len(timestamp) - 1
+        
+        short_hash = short_hash[:available_length] if available_length > 0 else short_hash[:4]
+        doc_id = f"{clean_prefix}_{timestamp}_{short_hash}"
+    else:
+        # Sử dụng prefix mặc định DOC
+        doc_id = f"DOC_{timestamp}_{short_hash}"
+    
+    # Đảm bảo không vượt quá max_length
+    if len(doc_id) > max_length:
+        # Cắt ngắn nếu cần
+        excess = len(doc_id) - max_length
+        if len(short_hash) > excess:
+            short_hash = short_hash[:-excess]
+            if base_string:
+                clean_prefix = re.sub(r'[^\w]', '', base_string)[:10]
+                doc_id = f"{clean_prefix}_{timestamp}_{short_hash}"
+            else:
+                doc_id = f"DOC_{timestamp}_{short_hash}"
+        else:
+            # Fallback: sử dụng pure timestamp + hash
+            doc_id = f"D{timestamp}{short_hash}"[:max_length]
+    
+    return doc_id
 
 
 class TaiLieu(BaseModel):
@@ -91,7 +152,9 @@ class TaiLieu(BaseModel):
     def generate_identifiers(self, stt: int):
         """Generate new design identifiers"""
         self.stt = stt
-        self.file_id = str(uuid4())  # Use UUID for docId
+        # Tạo docId ngắn dưới 25 ký tự với base từ ma_tai_lieu hoặc số thứ tự
+        base_string = self.ma_tai_lieu if self.ma_tai_lieu else f"DOC{stt:03d}"
+        self.file_id = generate_short_doc_id(base_string, max_length=25)
         self.ead_doc_filename = f"EAD_doc_File{stt}.xml"  # Keep sequential filename for file system
         self.dmd_id = f"dmd-doc-{stt}"
     
