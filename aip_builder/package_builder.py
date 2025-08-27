@@ -392,14 +392,21 @@ class PackageBuilder:
         # Danh sach cac schema can thiet
         required_schemas = ['mets.xsd', 'ead.xsd', 'premis.xsd']
         
+        # Khởi tạo nội dung METS nếu chưa có
+        mets_content = ""  # Hoặc tải nội dung METS từ tệp hoặc template
+
         try:
             for schema_file in required_schemas:
                 source_path = project_schemas / schema_file
                 dest_path = schemas_dir / schema_file
-                
+
                 if source_path.exists():
-                    dest_path.write_text(source_path.read_text(encoding='utf-8'), encoding='utf-8')
-                    logger.debug(f"Sao chep schema: {schema_file}")
+                    # Sao chep file schema
+                    shutil.copy(source_path, dest_path)
+
+                    # Tinh checksum cho file schema
+                    schema_checksum = self._calculate_checksum(source_path)
+                    mets_content = mets_content.replace(f'PLACEHOLDER_SCHEMA_{schema_file.upper()}_CHECKSUM', schema_checksum)
                 else:
                     # Tao file schema placeholder neu khong co
                     placeholder_content = f'<!-- Placeholder for {schema_file} -->\n<!-- Download from official source -->'
@@ -481,6 +488,32 @@ class PackageBuilder:
                     
                     mets_content = mets_content.replace(f'PLACEHOLDER_EAD_DOC_{file_id}_SIZE', str(ead_size))
                     mets_content = mets_content.replace(f'PLACEHOLDER_EAD_DOC_{file_id}_CHECKSUM', ead_checksum)
+            
+            # Update Representation file info in main METS
+            representation_file = package_dir / "representations" / "rep1" / "METS.xml"
+            if representation_file.exists():
+                rep_size = representation_file.stat().st_size
+                rep_checksum = self._calculate_checksum(representation_file)
+
+                mets_content = mets_content.replace('PLACEHOLDER_REP_CHECKSUM', rep_checksum)
+            
+            # Update PREMIS schema checksum in main METS
+            premis_schema_file = package_dir / "schemas" / "premis.xsd"
+            if premis_schema_file.exists():
+                premis_schema_checksum = self._calculate_checksum(premis_schema_file)
+                mets_content = mets_content.replace('PLACEHOLDER_SCHEMA_PREMIS_CHECKSUM', premis_schema_checksum)
+            
+            # Update METS schema checksum in main METS
+            mets_schema_file = package_dir / "schemas" / "mets.xsd"
+            if mets_schema_file.exists():
+                mets_schema_checksum = self._calculate_checksum(mets_schema_file)
+                mets_content = mets_content.replace('PLACEHOLDER_SCHEMA_METS_CHECKSUM', mets_schema_checksum)
+
+            # Update EAD schema checksum in main METS
+            ead_schema_file = package_dir / "schemas" / "ead.xsd"
+            if ead_schema_file.exists():
+                ead_schema_checksum = self._calculate_checksum(ead_schema_file)
+                mets_content = mets_content.replace('PLACEHOLDER_SCHEMA_EAD_CHECKSUM', ead_schema_checksum)
             
             mets_path.write_text(mets_content, encoding='utf-8')
             logger.debug(f"Updated placeholders in {mets_path}")

@@ -130,13 +130,24 @@ def interactive_parameter_input():
         type=int
     )
     
+    # Prompt for mã phông
+    click.echo("\n📁 Mã phông:")
+    click.echo("   (Lưu ý: Khác với 'tên phông' trong Excel cột B)")
+    ma_phong = click.prompt(
+        "Mã phông để đưa vào METS (để trống nếu không có)",
+        default="",
+        show_default=False
+    )
+    ma_phong = ma_phong.strip() if ma_phong else None
+    
     return {
         'meta': meta_path,
         'pdf_root': pdf_root,
         'out': output_dir,
         'cleanup_folders': cleanup_folders,
         'validate_after': validate_after,
-        'max_workers': max_workers
+        'max_workers': max_workers,
+        'ma_phong': ma_phong
     }
 
 
@@ -158,7 +169,8 @@ def cli(log_level: str, config_file: Optional[str]):
 @click.option('--pdf-root', default=None, help='Thu muc goc chua PDF')
 @click.option('--out', default=None, help='Thu muc dau ra')
 @click.option('--keep-folders/--no-keep-folders', default=True, help='Giu thu muc sau khi nen')
-def build(meta: Optional[str], pdf_root: Optional[str], out: Optional[str], keep_folders: bool):
+@click.option('--ma-phong', default=None, help='Ma phong cho metsHdr/agent/note voi csip:NOTETYPE="IDENTIFICATIONCODE" (khac voi ten phong trong Excel)')
+def build(meta: Optional[str], pdf_root: Optional[str], out: Optional[str], keep_folders: bool, ma_phong: Optional[str]):
     """Xay dung goi AIP tu metadata Excel va file PDF"""
     
     config = get_config()
@@ -326,7 +338,8 @@ def test_xml(meta: str, output: str):
 @click.option('--limit', type=int, help='Gioi han so luong ho so (cho test)')
 @click.option('--cleanup/--no-cleanup', default=None, help='Xoa folder AIP sau khi tao ZIP (mac dinh: giu folder)')
 @click.option('--interactive/--no-interactive', default=None, help='Che do nhap tham so tuong tac (mac dinh: auto-detect)')
-def build(meta: Optional[str], pdf_root: Optional[str], output: Optional[str], limit: Optional[int], cleanup: Optional[bool], interactive: Optional[bool]):
+@click.option('--ma-phong', default=None, help='Ma phong cho metsHdr/agent/note voi csip:NOTETYPE="IDENTIFICATIONCODE" (khac voi ten phong trong Excel)')
+def build(meta: Optional[str], pdf_root: Optional[str], output: Optional[str], limit: Optional[int], cleanup: Optional[bool], interactive: Optional[bool], ma_phong: Optional[str]):
     """Xay dung cac goi AIP tu metadata Excel va PDF files"""
     
     config = get_config()
@@ -346,6 +359,7 @@ def build(meta: Optional[str], pdf_root: Optional[str], output: Optional[str], l
         pdf_root = params['pdf_root']
         output = params['out']
         cleanup = params['cleanup_folders']
+        ma_phong = ma_phong or params.get('ma_phong')  # Ưu tiên tham số command line
         # Có thể thêm các tham số khác từ interactive input
     
     # Sử dụng giá trị mặc định cho các tham số chưa được set
@@ -396,6 +410,17 @@ def build(meta: Optional[str], pdf_root: Optional[str], output: Optional[str], l
         if limit and limit > 0:
             hoso_list = hoso_list[:limit]
             click.echo(f"🔢 Gioi han {limit} ho so dau tien")
+        
+        # Cap nhat ma phong cho tat ca ho so neu duoc cung cap
+        ma_phong_final = ma_phong or config.default_ma_phong
+        if ma_phong_final:
+            for hoso in hoso_list:
+                hoso.ma_phong = ma_phong_final
+                # Regenerate OBJID with ma_phong
+                hoso.objid = hoso.generate_objid_with_ma_phong()
+            click.echo(f"📁 Da cap nhat ma phong: {ma_phong_final}")
+        else:
+            click.echo("📁 Khong co ma phong - OBJID se dung format urn:uuid:{UUIDs}")
             
         click.echo(f"✓ Tim thay {len(hoso_list)} ho so")
         

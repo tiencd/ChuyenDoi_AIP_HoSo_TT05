@@ -7,18 +7,49 @@
   In production, download the official schema from Library of Congress.
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           targetNamespace="urn:isbn:1-931666-22-9"
-           xmlns:ead="urn:isbn:1-931666-22-9"
-           elementFormDefault="qualified">
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified" id="uuid-...">
     
-    <!-- Placeholder schema content -->
-    <xs:element name="ead">
-        <xs:complexType>
-            <xs:anyAttribute processContents="skip"/>
-            <xs:sequence>
-                <xs:any processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-    
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+               schemaLocation="xml.xsd">
+    </xs:import>
+
+    <xs:group name="elementsGroup">
+        <xs:sequence>
+            <xs:element name="arcFileCode" type="xs:string"/>
+            <xs:element name="title" type="xs:string"/>
+            <xs:element name="maintenance" type="xs:string"/>
+            <xs:element name="mode" type="xs:string"/>
+            <xs:element name="language" type="xs:string"/>
+            <xs:element name="startDate" type="xs:string"/>
+            <xs:element name="endDate" type="xs:string"/>
+            <xs:element name="keyword" type="xs:string"/>
+            <xs:element name="totalDoc" type="xs:string"/>
+            <xs:element name="numberOfPaper" type="xs:string"/>
+            <xs:element name="numberOfPage" type="xs:string"/>
+            <xs:element name="format" type="xs:string"/>
+            <xs:element name="inforSign" type="xs:string"/>
+            <xs:element name="confidenceLevel" type="xs:string"/>
+            <xs:element name="paperFileCode" type="xs:string"/>
+            <xs:element name="description" type="xs:string"/>
+            <xs:element name="riskRecovery" type="xs:string"/>
+            <xs:element name="riskRecoveryStatus" type="xs:string"/>
+        </xs:sequence>
+    </xs:group>
+
+    <xs:complexType name="elementContainer">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                This complexType is included as a convenience for schema authors who need to define a root
+                or container element for all of the DC elements.
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:choice>
+            <xs:group ref="elementsGroup"/>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:element name="simpledc" type="elementContainer"/>
+
 </xs:schema>

@@ -50,6 +50,12 @@ class TaiLieu(BaseModel):
     ead_doc_filename: Optional[str] = None  # "EAD_doc_File<stt>.xml"
     dmd_id: Optional[str] = None  # "dmd-doc-<stt>"
     
+    # Rep METS specific UUIDs for each TaiLieu
+    dmd_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    dmd_ref_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    file_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    metalink_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    
     # Legacy fields for backward compatibility
     ten_loai_van_ban: Optional[str] = None
     so_van_ban: Optional[str] = None  
@@ -296,7 +302,47 @@ class HoSo(BaseModel):
     # New design fields
     objid: str = Field(default_factory=lambda: f"urn:uuid:{uuid4()}")  # UUID cho package
     paper_file_code: Optional[str] = None  # = arc_file_code theo thiet ke moi
+    ma_phong: Optional[str] = None  # Mã phông - dùng cho metsHdr/agent/note với csip:NOTETYPE="IDENTIFICATIONCODE"
     
+    # Additional fields for METS generation
+    metadata_id: str = Field(default_factory=lambda: f"metadata-{uuid4()}")
+    schemas_id: str = Field(default_factory=lambda: f"schemas-{uuid4()}")
+    representations_id: str = Field(default_factory=lambda: f"representations-{uuid4()}")
+    
+    # Rep METS specific UUIDs
+    rep_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    dmd_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    dmd_ref_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    amd_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    digiprov_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    premis_ref_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    filesec_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    filegroup_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    structmap_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    main_div_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    metadata_div_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    data_div_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    metalink_div_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    
+    # Main METS specific UUIDs  
+    main_dmd_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    main_dmd_ref_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    main_amd_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    main_digiprov_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    main_premis_ref_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    main_filesec_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    main_repr_group_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    main_repr_file_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    main_schemas_group_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    main_mets_xsd_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    main_ead_xsd_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    main_premis_xsd_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    main_structmap_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    main_div_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    main_metadata_div_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    main_schemas_div_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+    main_repr_div_uuid: str = Field(default_factory=lambda: str(uuid4()).upper())
+
     # Thong tin dinh danh tu Excel A-X
     ma_co_quan: Optional[str] = None  # A - Mã cơ quan  
     ten_co_quan: Optional[str] = None  # B - Tên cơ quan
@@ -356,6 +402,14 @@ class HoSo(BaseModel):
     # Path information - duong dan tuong doi tu thu muc goc
     original_folder_path: Optional[Path] = None  # Duong dan tuong doi tu PDF_Files, vi du: "Chi cuc an toan ve sinh thuc pham/hopso01/hoso01"
     
+    def generate_objid_with_ma_phong(self) -> str:
+        """Generate OBJID with format: urn:Fondcode:uuid:{UUIDs}"""
+        uuid_part = str(uuid4()).upper()
+        if self.ma_phong:
+            return f"urn:{self.ma_phong}:uuid:{uuid_part}"
+        else:
+            return f"urn:uuid:{uuid_part}"
+    
     def __post_init__(self):
         """Post initialization to set derived fields"""
         # Set paper_file_code = arc_file_code theo thiet ke moi
@@ -371,9 +425,23 @@ class HoSo(BaseModel):
         if not self.title and self.tieu_de_ho_so:
             self.title = self.tieu_de_ho_so
         
+        # Generate OBJID with ma_phong if available
+        if self.ma_phong:
+            self.objid = self.generate_objid_with_ma_phong()
+        
         # Generate identifiers for tai_lieu
         for i, tai_lieu in enumerate(self.tai_lieu, 1):
             tai_lieu.generate_identifiers(i)
+        
+        # Initialize metadata, schemas, and representations IDs based on file_id
+        if not self.file_id:
+            self.file_id = self.id  # Default to system-generated ID if not provided
+        if not self.metadata_id:
+            self.metadata_id = f"metadata-{self.file_id}"
+        if not self.schemas_id:
+            self.schemas_id = f"schemas-{self.file_id}"
+        if not self.representations_id:
+            self.representations_id = f"representations-{self.file_id}"
     
     @property
     def effective_title(self) -> str:

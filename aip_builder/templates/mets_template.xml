@@ -6,21 +6,22 @@
            xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/mets.xsd"
            OBJID="{{ hoso.objid }}"
            LABEL="{{ hoso.effective_title | escape_xml }}"
-           TYPE="AIP"
+           TYPE="Mixed"
            PROFILE="https://eark-project.com/E-ARK-CSIP-1.2">
-  
-  <!-- CSIP OAIS Package Type -->
-  <csip:OAISPACKAGETYPE>AIP</csip:OAISPACKAGETYPE>
-  
+
   <!-- METS Header -->
   <mets:metsHdr CREATEDATE="{{ created_time | format_date('%Y-%m-%dT%H:%M:%S+07:00') }}"
                 LASTMODDATE="{{ created_time | format_date('%Y-%m-%dT%H:%M:%S+07:00') }}">
-    <mets:agent ROLE="CREATOR" TYPE="OTHER" OTHERTYPE="SOFTWARE">
-      <mets:name>AIP Builder v1.0</mets:name>
-      <mets:note>Enhanced CSIP 1.2 compliant AIP package with UUID identifiers</mets:note>
+    <csip:OAISPACKAGETYPE>AIP</csip:OAISPACKAGETYPE>
+    <mets:agent ROLE="CREATOR" TYPE="ORGANIZATION">
+      <mets:name>{{ config.organization_name | escape_xml }}</mets:name>
+      {% if hoso.ma_phong %}
+      <mets:note csip:NOTETYPE="IDENTIFICATIONCODE">{{ hoso.ma_phong }}</mets:note>
+      {% endif %}
     </mets:agent>
     <mets:agent ROLE="ARCHIVIST" TYPE="ORGANIZATION">
       <mets:name>{{ config.organization_name | escape_xml }}</mets:name>
+      <mets:note csip:NOTETYPE="IDENTIFICATIONCODE">PARTYCODE</mets:note>
       {% if config.organization_email %}
       <mets:note>Contact: {{ config.organization_email }}</mets:note>
       {% endif %}
@@ -28,10 +29,12 @@
   </mets:metsHdr>
   
   <!-- Descriptive Metadata Section - Using mdRef for external references -->
-  <mets:dmdSec ID="dmd-{{ hoso.file_id }}">
-    <mets:mdRef ID="mdref-ead-{{ hoso.file_id }}"
+  <mets:dmdSec ID="uuid-{{ hoso.main_dmd_uuid | upper }}" CREATED="{{ created_time }}">
+    <mets:mdRef ID="uuid-{{ hoso.main_dmd_ref_uuid | upper }}"
                 LOCTYPE="URL" 
-                MDTYPE="EAD" 
+                MDTYPE="OTHER"
+                OTHERMDTYPE="EAD"
+                MDTYPEVERSION="1.0"
                 MIMETYPE="text/xml"
                 SIZE="PLACEHOLDER_EAD_SIZE"
                 CHECKSUMTYPE="SHA-256"
@@ -42,9 +45,9 @@
   </mets:dmdSec>
   
   <!-- Administrative Metadata -->
-  <mets:amdSec ID="amd-{{ hoso.file_id }}">
-    <mets:digiprovMD ID="digiprov-{{ hoso.file_id }}">
-      <mets:mdRef ID="mdref-premis-{{ hoso.file_id }}"
+  <mets:amdSec ID="uuid-{{ hoso.main_amd_uuid | upper }}">
+    <mets:digiprovMD ID="uuid-{{ hoso.main_digiprov_uuid | upper }}" STATUS="CURRENT">
+      <mets:mdRef ID="uuid-{{ hoso.main_premis_ref_uuid | upper }}"
                   LOCTYPE="URL" 
                   MDTYPE="PREMIS" 
                   MIMETYPE="text/xml"
@@ -58,46 +61,44 @@
   </mets:amdSec>
 
   <!-- File Section -->
-  <mets:fileSec>
+  <mets:fileSec ID="uuid-{{ hoso.main_filesec_uuid | upper }}">
     <!-- Representation Files -->
-    <mets:fileGrp ID="rep-filegroup" USE="Representation">
-      <mets:file ID="rep-{{ hoso.file_id }}" MIMETYPE="application/xml">
+    <mets:fileGrp ID="uuid-{{ hoso.main_repr_group_uuid | upper }}" USE="Representations/rep1">
+      <mets:file ID="ID-{{ hoso.main_repr_file_uuid | upper }}" MIMETYPE="application/xml" CREATED="{{ created_time }}" CHECKSUMTYPE="SHA-256" CHECKSUM="PLACEHOLDER_REP_CHECKSUM">
         <mets:FLocat LOCTYPE="URL" xlink:href="representations/rep1/METS.xml" xlink:type="simple"/>
       </mets:file>
     </mets:fileGrp>
     
     <!-- Schema Files -->
-    <mets:fileGrp ID="schema-filegroup" USE="Schema">
-      <mets:file ID="schema-mets" MIMETYPE="application/xml">
+    <mets:fileGrp ID="uuid-{{ hoso.main_schemas_group_uuid | upper }}" USE="Schemas">
+      <mets:file ID="ID-{{ hoso.main_mets_xsd_uuid | upper }}" MIMETYPE="application/octet-stream" CREATED="{{ created_time }}" CHECKSUMTYPE="SHA-256" CHECKSUM="PLACEHOLDER_SCHEMA_METS_CHECKSUM">
         <mets:FLocat LOCTYPE="URL" xlink:href="schemas/mets.xsd" xlink:type="simple"/>
       </mets:file>
-      <mets:file ID="schema-ead" MIMETYPE="application/xml">
+      <mets:file ID="ID-{{ hoso.main_ead_xsd_uuid | upper }}" MIMETYPE="application/octet-stream" CREATED="{{ created_time }}" CHECKSUMTYPE="SHA-256" CHECKSUM="PLACEHOLDER_SCHEMA_EAD_CHECKSUM">
         <mets:FLocat LOCTYPE="URL" xlink:href="schemas/ead.xsd" xlink:type="simple"/>
       </mets:file>
-      <mets:file ID="schema-premis" MIMETYPE="application/xml">
+      <mets:file ID="ID-{{ hoso.main_premis_xsd_uuid | upper }}" MIMETYPE="application/octet-stream" CREATED="{{ created_time }}" CHECKSUMTYPE="SHA-256" CHECKSUM="PLACEHOLDER_SCHEMA_PREMIS_CHECKSUM">
         <mets:FLocat LOCTYPE="URL" xlink:href="schemas/premis.xsd" xlink:type="simple"/>
       </mets:file>
     </mets:fileGrp>
   </mets:fileSec>
 
   <!-- Structure Map - Package Level -->
-  <mets:structMap ID="sm-{{ hoso.file_id }}" LABEL="CSIP" TYPE="logical">
-    <mets:div ID="package-{{ hoso.file_id }}" TYPE="AIP" LABEL="{{ hoso.effective_title | escape_xml }}" DMDID="dmd-{{ hoso.file_id }}" ADMID="amd-{{ hoso.file_id }}">
+  <mets:structMap ID="uuid-{{ hoso.main_structmap_uuid | upper }}" LABEL="CSIP" TYPE="PHYSICAL">
+    <mets:div ID="uuid-{{ hoso.main_div_uuid | upper }}" LABEL="uuid-{{ hoso.main_dmd_uuid | upper }}">
       
       <!-- Metadata -->
-      <mets:div ID="metadata-{{ hoso.file_id }}" LABEL="Metadata" DMDID="dmd-{{ hoso.file_id }}" ADMID="amd-{{ hoso.file_id }}">
+      <mets:div ID="uuid-{{ hoso.main_metadata_div_uuid | upper }}" LABEL="Metadata" DMDID="uuid-{{ hoso.main_dmd_uuid | upper }}" ADMID="uuid-{{ hoso.main_amd_uuid | upper }}">
       </mets:div>
       
       <!-- Schemas -->
-      <mets:div ID="schemas-{{ hoso.file_id }}" LABEL="Schemas">
-        <mets:fptr FILEID="schema-mets"/>
-        <mets:fptr FILEID="schema-ead"/>
-        <mets:fptr FILEID="schema-premis"/>
+      <mets:div ID="uuid-{{ hoso.main_schemas_div_uuid | upper }}" LABEL="Schemas">
+        <mets:fptr FILEID="uuid-{{ hoso.main_schemas_group_uuid | upper }}"/>
       </mets:div>
       
       <!-- Representations -->
-      <mets:div ID="representations-{{ hoso.file_id }}" LABEL="Representations/rep1">
-        <mets:mptr LOCTYPE="URL" xlink:href="representations/rep1/METS.xml" xlink:type="simple" xlink:title="METS of rep1"/>
+      <mets:div ID="uuid-{{ hoso.main_repr_div_uuid | upper }}" LABEL="Representations/rep1">
+        <mets:mptr LOCTYPE="URL" xlink:href="representations/rep1/METS.xml" xlink:type="simple" xlink:title="uuid-{{ hoso.main_repr_file_uuid | upper }}"/>
       </mets:div>
       
     </mets:div>

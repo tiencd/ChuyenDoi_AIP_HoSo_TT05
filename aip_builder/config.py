@@ -30,6 +30,7 @@ class Config:
     organization_email: str = "tiencd89@gmail.com"
     agency_code: str = "HTJSC"
     repository_code: str = "NARA"
+    default_ma_phong: Optional[str] = None  # Mã phông mặc định
     
     # Cau hinh XML
     mets_namespace: str = "http://www.loc.gov/METS/"

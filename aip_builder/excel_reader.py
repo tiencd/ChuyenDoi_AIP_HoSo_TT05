@@ -284,7 +284,7 @@ class ExcelReader:
         # Direct mapping from renamed columns (from _extract_hoso_data)
         direct_mappings = {
             'stt_ho_so': 'stt_ho_so',
-            'phong': 'phong', 
+            'phong': 'phong',  # Keep as phong (tên phông), not ma_phong (mã phông)
             'muc_luc': 'muc_luc',
             'hop_so': 'hop_so',
             'so_ky_hieu_ho_so': 'so_ky_hieu_ho_so',
