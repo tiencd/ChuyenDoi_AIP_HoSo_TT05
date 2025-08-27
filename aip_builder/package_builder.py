@@ -388,31 +388,13 @@ class PackageBuilder:
         
         # Duong dan den thu muc schemas trong project
         project_schemas = Path(__file__).parent / 'schemas'
-        
-        # Danh sach cac schema can thiet
-        required_schemas = ['mets.xsd', 'ead.xsd', 'premis.xsd']
-        
-        # Khởi tạo nội dung METS nếu chưa có
-        mets_content = ""  # Hoặc tải nội dung METS từ tệp hoặc template
 
         try:
-            for schema_file in required_schemas:
-                source_path = project_schemas / schema_file
-                dest_path = schemas_dir / schema_file
-
-                if source_path.exists():
-                    # Sao chep file schema
-                    shutil.copy(source_path, dest_path)
-
-                    # Tinh checksum cho file schema
-                    schema_checksum = self._calculate_checksum(source_path)
-                    mets_content = mets_content.replace(f'PLACEHOLDER_SCHEMA_{schema_file.upper()}_CHECKSUM', schema_checksum)
-                else:
-                    # Tao file schema placeholder neu khong co
-                    placeholder_content = f'<!-- Placeholder for {schema_file} -->\n<!-- Download from official source -->'
-                    dest_path.write_text(placeholder_content, encoding='utf-8')
-                    logger.warning(f"Tao placeholder cho schema: {schema_file}")
-                    
+            # Copy tất cả các file .xsd trong thư mục schemas
+            for source_path in project_schemas.glob('*.xsd'):
+                dest_path = schemas_dir / source_path.name
+                shutil.copy(source_path, dest_path)
+                logger.info(f"Da copy schema: {source_path.name}")
         except Exception as e:
             logger.error(f"Loi sao chep schema files: {e}")
             raise

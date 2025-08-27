@@ -69,9 +69,19 @@ class XMLTemplateGenerator:
         def safe_filename(value):
             """Tao filename an toan"""
             import re
+            import unicodedata
             if not value:
                 return 'unknown'
-            return re.sub(r'[^a-zA-Z0-9_.-]', '_', str(value))
+            # Loại bỏ dấu tiếng Việt
+            value = unicodedata.normalize('NFD', str(value))
+            value = value.encode('ascii', 'ignore').decode('utf-8')
+            # Chuyển về chữ thường
+            value = value.lower()
+            # Thay khoảng trắng bằng _
+            value = re.sub(r'\s+', '_', value)
+            # Chỉ giữ ký tự a-z, 0-9, _, -
+            value = re.sub(r'[^a-z0-9_-]', '', value)
+            return value
         
         def basename(value):
             """Lay ten file tu duong dan"""
