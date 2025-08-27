@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified" id="uuid-...">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+    <xs:group name="elementsGroup">
+        <xs:sequence>
+            <xs:element name="arcFileCode" type="xs:string"/>
+            <xs:element name="mode" type="xs:string"/>
+            <xs:element name="format" type="xs:string"/>
+            <xs:element name="inforSign" type="xs:string"/>
+            <xs:element name="description" type="xs:string"/>
+            <xs:element name="docOrdinal" type="xs:string"/>
+            <xs:element name="typePic" type="xs:string"/>
+            <xs:element name="archivesNumber" type="xs:string"/>
+            <xs:element name="eventName" type="xs:string"/>
+            <xs:element name="imageTitle" type="xs:string"/>
+            <xs:element name="photographer" type="xs:string"/>
+            <xs:element name="photoPlace" type="xs:string"/>
+            <xs:element name="photoTime" type="xs:string"/>
+            <xs:element name="colour" type="xs:string"/>
+            <xs:element name="filmSize" type="xs:string"/>
+            <xs:element name="docAttached" type="xs:string"/>
+        </xs:sequence>
+    </xs:group>
+    <xs:complexType name="elementContainer">
+        <xs:choice>
+            <xs:group ref="elementsGroup"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:element name="simpledc" type="elementContainer"/>
+</xs:schema>
