@@ -13,18 +13,20 @@
   <mets:metsHdr CREATEDATE="{{ created_time | format_date('%Y-%m-%dT%H:%M:%S+07:00') }}"
                 LASTMODDATE="{{ created_time | format_date('%Y-%m-%dT%H:%M:%S+07:00') }}">
     <csip:OAISPACKAGETYPE>AIP</csip:OAISPACKAGETYPE>
-    <mets:agent ROLE="CREATOR" TYPE="ORGANIZATION">
-      <mets:name>{{ config.organization_name | escape_xml }}</mets:name>
-      {% if hoso.ma_phong %}
-      <mets:note csip:NOTETYPE="IDENTIFICATIONCODE">{{ hoso.ma_phong }}</mets:note>
-      {% endif %}
+    <mets:agent ROLE="{{ config.software_agent_role }}" TYPE="{{ config.software_agent_type }}" OTHERTYPE="{{ config.software_agent_othertype }}">
+      <mets:name>{{ config.software_agent_name }}</mets:name>
+      <mets:note csip:NOTETYPE="SOFTWARE VERSION">{{ config.software_agent_version }}</mets:note>
     </mets:agent>
-    <mets:agent ROLE="ARCHIVIST" TYPE="ORGANIZATION">
+    <mets:agent ROLE="EDITOR" TYPE="ORGANIZATION">
       <mets:name>{{ config.organization_name | escape_xml }}</mets:name>
-      <mets:note csip:NOTETYPE="IDENTIFICATIONCODE">PARTYCODE</mets:note>
+      <mets:note csip:NOTETYPE="IDENTIFICATIONCODE">{{ config.agency_code }}</mets:note>
       {% if config.organization_email %}
       <mets:note>Contact: {{ config.organization_email }}</mets:note>
       {% endif %}
+    </mets:agent>
+    <mets:agent ROLE="ARCHIVIST" TYPE="ORGANIZATION">
+      <mets:name>{{ config.archivist_name | escape_xml }}</mets:name>
+      <mets:note csip:NOTETYPE="IDENTIFICATIONCODE">{{ config.archivist_code }}</mets:note>
     </mets:agent>
   </mets:metsHdr>
   

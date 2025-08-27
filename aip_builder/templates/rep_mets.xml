@@ -14,15 +14,17 @@
                   LASTMODDATE="{{ created_time | format_date('%Y-%m-%dT%H:%M:%S+07:00') }}"
                   RECORDSTATUS="NEW"
                   csip:OAISPACKAGETYPE="AIP">
-        <mets:agent ROLE="CREATOR" TYPE="ORGANIZATION">
+        <mets:agent ROLE="{{ config.software_agent_role }}" TYPE="{{ config.software_agent_type }}" OTHERTYPE="{{ config.software_agent_othertype }}">
+            <mets:name>{{ config.software_agent_name }}</mets:name>
+            <mets:note csip:NOTETYPE="SOFTWARE VERSION">{{ config.software_agent_version }}</mets:note>
+        </mets:agent>
+        <mets:agent ROLE="EDITOR" TYPE="ORGANIZATION">
             <mets:name>{{ config.organization_name | escape_xml }}</mets:name>
-            {% if hoso.ma_phong %}
-            <mets:note csip:NOTETYPE="IDENTIFICATIONCODE">{{ hoso.ma_phong }}</mets:note>
-            {% endif %}
+            <mets:note csip:NOTETYPE="IDENTIFICATIONCODE">{{ config.agency_code }}</mets:note>
         </mets:agent>
         <mets:agent ROLE="ARCHIVIST" TYPE="ORGANIZATION">
-            <mets:name>{{ config.organization_name | escape_xml }}</mets:name>
-            <mets:note csip:NOTETYPE="IDENTIFICATIONCODE">PARTYCODE</mets:note>
+            <mets:name>{{ config.archivist_name | escape_xml }}</mets:name>
+            <mets:note csip:NOTETYPE="IDENTIFICATIONCODE">{{ config.archivist_code }}</mets:note>
         </mets:agent>
     </mets:metsHdr>
 

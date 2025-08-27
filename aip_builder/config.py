@@ -25,12 +25,23 @@ class Config:
     default_output_prefix: str = "data/output"
     default_keep_folders: bool = True
     
-    # Organization info
+    # Organization info (CREATOR)
     organization_name: str = "Công ty cổ phần công nghệ Lưu trữ - Số hóa HT"
     organization_email: str = "tiencd89@gmail.com"
     agency_code: str = "HTJSC"
     repository_code: str = "NARA"
     default_ma_phong: Optional[str] = None  # Mã phông mặc định
+    
+    # Archivist info (ARCHIVIST)
+    archivist_name: str = "Trung tâm lưu trữ lịch sử - Sở Nội vụ thành phố Cần Thơ"
+    archivist_code: str = "TTLTLS_SNV_CT"
+    
+    # Software agent info (SOFTWARE TYPE)
+    software_agent_name: str = "AIP Builder System"
+    software_agent_version: str = "1.0.0"
+    software_agent_role: str = "CREATOR"
+    software_agent_type: str = "OTHER"
+    software_agent_othertype: str = "SOFTWARE"
     
     # Cau hinh XML
     mets_namespace: str = "http://www.loc.gov/METS/"
