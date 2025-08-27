@@ -427,25 +427,21 @@ class PackageBuilder:
         Returns:
             Path cua file ZIP da tao
         """
-        zip_path = package_dir.with_suffix('.zip')
-        
+        zip_path = package_dir.parent / (package_dir.name + '.zip')
         logger.info(f"Tao file ZIP: {zip_path}")
-        
         try:
             with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as zipf:
                 # Duyet tat ca file trong package directory
                 for file_path in package_dir.rglob('*'):
                     if file_path.is_file():
-                        # Tinh duong dan tuong doi so voi package root
-                        arcname = file_path.relative_to(package_dir.parent)
+                        # Tinh duong dan tuong doi so voi package directory
+                        # Giu ten folder package trong ZIP
+                        arcname = Path(package_dir.name) / file_path.relative_to(package_dir)
                         zipf.write(file_path, arcname)
-                        
             # Tinh kich thuoc file ZIP
             zip_size_mb = zip_path.stat().st_size / (1024 * 1024)
             logger.info(f"Tao thanh cong file ZIP: {zip_path.name} ({zip_size_mb:.2f} MB)")
-            
             return zip_path
-            
         except Exception as e:
             logger.error(f"Loi tao file ZIP: {e}")
             # Neu loi thi xoa file ZIP khong hoan chinh
